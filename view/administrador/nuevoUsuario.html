@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Añadir Nuevo Usuario | Canchas SV</title>
+
+  <!-- Tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap.min.css">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="/public/assets/icons/bootstrap-icons.css">
+
+  <!-- Estilos globales + sidebar (mismo diseño que otras vistas admin) -->
+  <link rel="stylesheet" href="/public/assets/css/style.css">
+  <link rel="stylesheet" href="/public/assets/css/sidebar.css">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Botón móvil -->
+  <button id="mobile-menu-btn" class="mobile-menu-btn btn text-white">
+    <i class="bi bi-list fs-3"></i>
+  </button>
+
+  <main class="main-content p-4">
+    <div class="container-fluid">
+
+      <!-- Encabezado -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Añadir Nuevo Usuario</h2>
+        <small class="text-secondary">Bienvenido, Administrador</small>
+      </div>
+
+      <!-- Formulario -->
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 col-xl-7">
+          <div class="card shadow-sm">
+            <div class="card-body p-4 p-md-5">
+              <form id="formNuevoUsuario" autocomplete="off">
+                <!-- Nombre -->
+                <div class="mb-3">
+                  <label for="nombre" class="form-label">Nombre Completo <span class="text-danger">*</span></label>
+                  <input id="nombre" name="nombre" type="text" class="form-control" placeholder="Ingrese el Nombre Completo" required minlength="3" maxlength="120" />
+                </div>
+
+                <!-- Correo -->
+                <div class="mb-3">
+                  <label for="correo" class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
+                  <input id="correo" name="correo" type="email" class="form-control" placeholder="example@example.com" required />
+                </div>
+
+                <!-- Contraseña -->
+                <div class="mb-3">
+                  <label for="contrasena" class="form-label">Contraseña <span class="text-danger">*</span></label>
+                  <input id="contrasena" name="contrasena" type="password" class="form-control" placeholder="************" required minlength="8" autocomplete="new-password" />
+                  <div class="form-text">Mínimo 8 caracteres.</div>
+                </div>
+
+                <!-- Confirmar Contraseña -->
+                <div class="mb-3">
+                  <label for="confirmar" class="form-label">Confirmar Contraseña <span class="text-danger">*</span></label>
+                  <input id="confirmar" name="confirmar" type="password" class="form-control" placeholder="************" required minlength="8" autocomplete="new-password" />
+                </div>
+
+                <!-- Rol -->
+                <div class="mb-4">
+                  <label for="rol" class="form-label">Rol <span class="text-danger">*</span></label>
+                  <select id="rol" name="rol" class="form-select" required>
+                    <option value="" selected disabled>Seleccione el tipo de Rol</option>
+                    <option value="administrador">Administrador</option>
+                    <option value="propietario">Propietario</option>
+                    <option value="cliente">Cliente</option>
+                  </select>
+                </div>
+
+                <!-- Acciones -->
+                <div class="d-flex gap-2 justify-content-end">
+                  <a href="/view/administrador/gestion-usuario.html" class="btn btn-outline-light">Cancelar</a>
+                  <button type="submit" class="btn btn-sunshine">Guardar Usuario</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script src="/public/libs/jquery/jquery.min.js"></script>
+  <script src="/public/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/assets/js/main.js"></script>
+  <script src="/public/assets/js/sidebar.js"></script>
+  <script src="/public/assets/js/administrador/nuevoUsuario.js"></script>
+</body>
+</html>

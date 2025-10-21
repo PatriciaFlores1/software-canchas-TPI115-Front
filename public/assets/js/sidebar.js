@@ -29,13 +29,21 @@
   };
 
   // --- Renderizar el menú ---
-  menus[rolUsuario].forEach((item) => {
-    const link = document.createElement("a");
-    link.href = "#";
-    link.classList.add("sidebar-link");
-    link.innerHTML = `<i class="${item.icon}" title="${item.label}"></i><span>${item.label}</span>`;
-    menuContainer.appendChild(link);
-  });
+  function updateMenu(rol) {
+    menus[rol].forEach((item) => {
+      const link = document.createElement("a");
+      link.href = "#";
+      link.classList.add("sidebar-link");
+      link.innerHTML = `<i class="${item.icon}" title="${item.label}"></i><span>${item.label}</span>`;
+      menuContainer.appendChild(link);
+    });
+  }
+
+  updateMenu("administrador");
+  updateMenu("propietario");
+  updateMenu("cliente");
+
+
 
   // --- Elementos principales ---
   const sidebar = document.querySelector(".sidebar");
