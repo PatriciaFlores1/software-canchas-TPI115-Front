@@ -15,23 +15,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // NAVBAR
   if (navbarContainer) {
-    fetch(relativePath + "components/navbar.html")
-      .then(response => response.text())
-      .then(html => (navbarContainer.innerHTML = html));
+    fetch("/public/components/navbar.html")
+      .then((response) => response.text())
+      .then((html) => (navbarContainer.innerHTML = html));
   }
 
   // FOOTER
   if (footerContainer) {
-    fetch(relativePath + "components/footer.html")
-      .then(response => response.text())
-      .then(html => (footerContainer.innerHTML = html));
+    fetch("/public/components/footer.html")
+      .then((response) => response.text())
+      .then((html) => (footerContainer.innerHTML = html));
   }
 
   // SIDEBAR
   if (sidebarContainer) {
-    fetch(relativePath + "components/sidebar.html")
-      .then(res => res.text())
-      .then(html => {
+    fetch("/public/components/sidebar.html")
+      .then((res) => res.text())
+      .then((html) => {
         sidebarContainer.innerHTML = html;
 
         const sidebar = sidebarContainer.querySelector(".sidebar");
@@ -42,9 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Cargar script del sidebar después del HTML
         const script = document.createElement("script");
-        script.src = relativePath + "assets/js/sidebar.js";
+        script.src = "/public/assets/js/sidebar.js";
         document.body.appendChild(script);
       })
-      .catch(err => console.error("Error cargando sidebar:", err));
+      .catch((err) => console.error("Error cargando sidebar:", err));
   }
 });

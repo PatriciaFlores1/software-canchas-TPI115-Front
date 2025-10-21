@@ -64,7 +64,7 @@ class DetalleCanchaManager {
     if (imagenes.length === 0) {
       this.imagenesContainer.innerHTML = `
         <div class="carousel-item active">
-          <img src="../../assets/img/no-image.png" class="d-block w-100" alt="Sin imagen disponible">
+          <img src="/public/assets/img/no-image.png" class="d-block w-100" alt="Sin imagen disponible">
         </div>`;
       return;
     }
