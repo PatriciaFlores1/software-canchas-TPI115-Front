@@ -30,6 +30,9 @@ function renderView(Response $response, string $view): Response
 
 
 $app = AppFactory::create();
+$app->addBodyParsingMiddleware();
+
+(require __DIR__ . '/http/controllers/login.php')($app);
 
 $app->add(function (Request $request, RequestHandler $handler): Response {
     $uri = $request->getUri()->getPath();

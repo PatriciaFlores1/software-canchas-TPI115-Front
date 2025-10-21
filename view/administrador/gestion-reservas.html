@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Reservas | Canchas SV</title>
+
+  <!-- Tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap.min.css">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="/public/assets/icons/bootstrap-icons.css">
+
+  <!-- Estilos globales -->
+  <link rel="stylesheet" href="/public/assets/css/style.css">
+  <link rel="stylesheet" href="/public/assets/css/sidebar.css">
+  <link rel="stylesheet" href="/public/assets/css/gestion-reservas.css">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Botón móvil -->
+  <button id="mobile-menu-btn" class="mobile-menu-btn btn text-white">
+    <i class="bi bi-list fs-3"></i>
+  </button>
+
+  <main class="main-content p-4">
+    <div class="container-fluid">
+
+      <!-- Encabezado -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Gestión de Reservas</h2>
+        <small class="text-secondary">Bienvenido, Administrador</small>
+      </div>
+
+      <!-- Filtros -->
+      <div class="d-flex flex-wrap gap-2 mb-4 align-items-center">
+        <div class="input-group search-bar" style="max-width: 300px;">
+          <span class="input-group-text bg-transparent border-0">
+            <i class="bi bi-search"></i>
+          </span>
+          <input id="busqueda" type="text" class="form-control border-0" placeholder="Buscar por cancha o cliente">
+        </div>
+
+        <div>
+          <input id="fechaFiltro" type="date" class="form-control" style="max-width: 200px;">
+        </div>
+
+        <button id="btnFiltrar" class="btn btn-sunshine d-flex align-items-center">
+          <i class="bi bi-funnel-fill me-1"></i> Filtrar
+        </button>
+      </div>
+
+      <!-- Tabla -->
+      <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Cancha</th>
+              <th>Cliente</th>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Deporte</th>
+              <th>Precio</th>
+              <th>Estado</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tablaReservas">
+            <!-- Aquí se insertan las reservas dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginación -->
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <small id="infoResultados" class="text-secondary">Mostrando 0 de 0 resultados</small>
+
+        <div class="d-flex gap-2">
+          <button id="btnAnterior" class="btn btn-outline-light">
+            <i class="bi bi-arrow-left"></i> Anterior
+          </button>
+          <button id="btnSiguiente" class="btn btn-outline-light">
+            Siguiente <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script src="/public/libs/jquery/jquery.min.js"></script>
+  <script src="/public/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/assets/js/main.js"></script>
+  <script src="/public/assets/js/sidebar.js"></script>
+  <script src="/public/assets/js/administrador/gestionReservas.js"></script>
+</body>
+</html>

@@ -39,11 +39,11 @@
     });
   }
 
-  // Renderizar solo el menú correspondiente al rol actual
-  menuContainer.innerHTML = "";
   updateMenu("administrador");
   updateMenu("propietario");
   updateMenu("cliente");
+
+
 
   // --- Elementos principales ---
   const sidebar = document.querySelector(".sidebar");
@@ -66,8 +66,6 @@
       const isOpen = sidebar.classList.toggle("open");
       overlay.classList.toggle("active", isOpen);
       document.body.classList.toggle("no-scroll", isOpen);
-      // Ocultar/mostrar botón flotante en móvil para que no quede visible sobre el overlay
-      if (mobileMenuBtn) mobileMenuBtn.classList.toggle("d-none", isOpen);
     } else {
       sidebar.classList.toggle("collapsed");
     }
@@ -82,26 +80,6 @@
     sidebar.classList.remove("open");
     overlay.classList.remove("active");
     document.body.classList.remove("no-scroll");
-    if (mobileMenuBtn) mobileMenuBtn.classList.remove("d-none");
-  });
-
-  // Cerrar con tecla ESC en móvil
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && sidebar.classList.contains("open")) {
-      sidebar.classList.remove("open");
-      overlay.classList.remove("active");
-      document.body.classList.remove("no-scroll");
-      if (mobileMenuBtn) mobileMenuBtn.classList.remove("d-none");
-    }
-  });
-
-  // Asegurar estados correctos al redimensionar
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 768) {
-      sidebar.classList.remove("open");
-      overlay.classList.remove("active");
-      document.body.classList.remove("no-scroll");
-      if (mobileMenuBtn) mobileMenuBtn.classList.remove("d-none");
-    }
   });
 })();
+

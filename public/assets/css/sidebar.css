@@ -6,7 +6,7 @@
 .sidebar {
   background-color: var(--color-grisceletes);
   width: 240px;
-  min-height: 100vh;
+  height: 100vh; /* asegurar altura fija del viewport */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -17,6 +17,7 @@
   left: 0;
   z-index: 1000;
   transition: width 0.3s ease;
+  overflow: hidden; /* el scroll solo en el contenedor del menú */
 }
 
 /* ======================================== */
@@ -71,9 +72,40 @@
 /* ======================================== */
 #sidebar-menu {
   margin-top: 20px;
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
+  flex-wrap: nowrap !important; /* forzar una sola columna */
+  align-items: stretch;
+  width: 100%;
   gap: 10px;
+  /* Permitir scroll del listado cuando existan muchos items */
+  flex: 1 1 auto;
+  min-height: 0; /* necesario para que el flex-child pueda hacer overflow */
+  overflow-y: auto;   /* scroll vertical */
+  overflow-x: hidden; /* evitar scroll horizontal */
+  -webkit-overflow-scrolling: touch; /* suaviza en iOS */
+  overscroll-behavior: contain;
+  
+}
+
+/* Scrollbar estilizado: 1px de ancho (WebKit) */
+#sidebar-menu::-webkit-scrollbar {
+  width: 1px;
+}
+
+#sidebar-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#sidebar-menu::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+/* Firefox: no permite 1px exacto; usar thin */
+#sidebar-menu {
+  scrollbar-width: thin; /* aprox. */
+  scrollbar-color: rgb(255, 255, 255) transparent;
 }
 
 /* Botones del menú */
@@ -86,6 +118,8 @@
   font-weight: 600;
   font-size: 0.95rem;
   display: flex;
+  width: 100%;
+  flex: 0 0 auto; /* no permitir que rompan a más columnas */
   align-items: center;
   justify-content: flex-start;
   gap: 10px;

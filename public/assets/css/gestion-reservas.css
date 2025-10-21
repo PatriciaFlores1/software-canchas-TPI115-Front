@@ -1,0 +1,79 @@
+/* ===========================
+   Gestión de Reservas (Admin)
+   =========================== */
+
+/* Barra de búsqueda */
+.search-bar {
+  background-color: #1b1f2a;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #2a3242;
+  transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+.search-bar:focus-within {
+  border-color: var(--color-sunshine);
+  box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.2);
+}
+.search-bar .input-group-text {
+  background: transparent;
+  border: none;
+  padding-left: 12px;
+}
+.search-bar input {
+  border: none !important;
+  outline: 0 !important;
+  background: transparent;
+  color: #e6ebf5;
+}
+
+/* Tabla */
+.table-dark thead th {
+  border-bottom-color: #2f394a !important;
+}
+.table-dark tbody td,
+.table-dark thead th {
+  vertical-align: middle;
+}
+
+/* Badges de estado */
+.badge-estado {
+  background: #3a4153;
+  color: #d9deea;
+}
+.badge-confirmada {
+  background: #198754; /* Bootstrap success */
+}
+.badge-pendiente {
+  background: #ffc107; /* Bootstrap warning */
+  color: #1a1a1a;
+}
+.badge-cancelada {
+  background: #dc3545; /* Bootstrap danger */
+}
+
+/* Botones paginación */
+.btn-outline-light {
+  border-color: #3b4457;
+}
+.btn-outline-light:hover {
+  background: #2a3242;
+}
+
+/* Skeleton de carga */
+.reservas-skeleton {
+  height: 56px;
+  width: 100%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #222834 25%, #2a3242 37%, #222834 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 0% 0; }
+  100% { background-position: -135% 0; }
+}
+
+/* Responsivo */
+@media (max-width: 576px) {
+  .search-bar { max-width: 100% !important; }
+}
