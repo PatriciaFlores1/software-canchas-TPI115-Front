@@ -4,20 +4,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const footerContainer = document.getElementById("footer-container");
   const sidebarContainer = document.getElementById("sidebar-container");
 
-  // Detectar profundidad actual del archivo
-  const depth = window.location.pathname.split("/").length;
-  let relativePath = "./";
-
-  if (window.location.pathname.includes("/pages/")) {
-    // Si estamos en /pages/rol/... subimos dos niveles
-    relativePath = depth >= 4 ? "../../" : "../";
-  }
-
   // NAVBAR
   if (navbarContainer) {
     fetch("/public/components/navbar.html")
       .then((response) => response.text())
-      .then((html) => (navbarContainer.innerHTML = html));
+      .then((html) => (navbarContainer.innerHTML = html))
+      .finally(() => {
+        const script = document.createElement("script");
+        script.src = "/public/assets/js/navbar.js";
+        document.body.appendChild(script);
+      });
   }
 
   // FOOTER
@@ -40,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
           document.body.insertBefore(sidebar, mainContent);
         }
 
-        // Cargar script del sidebar después del HTML
         const script = document.createElement("script");
         script.src = "/public/assets/js/sidebar.js";
         document.body.appendChild(script);

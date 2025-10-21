@@ -48,16 +48,3 @@
     </div>
   </div>
 </nav>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const path = window.location.pathname;
-    const loginBtn = document.getElementById("btn-login");
-    const registroBtn = document.getElementById("btn-registro");
-
-    console.log(path);
-    if (path.includes("/login") || path.includes("/registro")) {
-      if (loginBtn) loginBtn.style.display = "none";
-      if (registroBtn) registroBtn.style.display = "none";
-    }
-  });
-</script>
