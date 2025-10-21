@@ -1,0 +1,28 @@
+<!-- COMPONENTE: SIDEBAR -->
+<aside class="sidebar d-flex flex-column justify-content-between">
+  <!-- HEADER: Logo + botón toggle -->
+  <div class="sidebar-header d-flex align-items-center justify-content-between mb-4">
+    <div class="sidebar-logo d-flex align-items-center">
+      <img src="../../assets/img/logo.png" alt="Logo Canchas SV" width="36" class="me-2">
+      <h5 class="fw-bold m-0 text-white">CANCHAS<br><span class="fw-light">SV</span></h5>
+    </div>
+    <button id="sidebar-toggle" class="sidebar-toggle btn text-white p-0" title="Expandir/Contraer menú">
+      <i class="bi bi-list fs-3"></i>
+    </button>
+  </div>
+
+  <nav id="sidebar-menu" class="nav flex-column"><!--Items se insertan dinamicamente--></nav>
+
+  <div class="sidebar-footer text-center">
+    <i class="bi bi-person-circle fs-3 mb-2 text-white"></i>
+    <div class="logout mt-2">
+      <a href="#" class="text-decoration-none text-white d-flex align-items-center justify-content-center">
+        <i class="bi bi-box-arrow-right me-2"></i>
+        <span>Salir</span>
+      </a>
+    </div>
+  </div>
+</aside>
+
+<!-- Overlay oscuro para móviles -->
+<div class="sidebar-overlay"></div>

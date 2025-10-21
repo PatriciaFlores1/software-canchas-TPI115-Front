@@ -1,0 +1,62 @@
+/* ========================== */
+/* HOME (index.html) */
+/* ========================== */
+
+.hero {
+  position: relative;
+  height: 90vh;
+  background: url('../img/fondo.png') center center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(51, 58, 86, 0.55);
+  z-index: 0;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  color: var(--color-white);
+  font-weight: 800;
+  font-size: 3rem;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.hero p {
+  color: #E3E6EC;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* SECCIONES */
+section {
+  padding: 80px 0;
+}
+
+/* SOBRE NOSOTROS */
+#nosotros {
+  background-color: var(--color-white);
+  border-radius: 10px;
+  padding: 70px 0;
+  box-shadow: var(--shadow-sm);
+}
+
+#nosotros h2 {
+  color: var(--color-vermillion);
+  font-weight: 700;
+}
+
+#nosotros p {
+  color: var(--color-sunshine);
+}

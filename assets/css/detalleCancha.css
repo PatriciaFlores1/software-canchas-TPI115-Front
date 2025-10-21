@@ -1,0 +1,105 @@
+/* ====================================== */
+/* DETALLE DE CANCHA                      */
+/* ====================================== */
+body {
+  background-color: var(--color-clean);
+  font-family: 'Nunito Sans', sans-serif;
+  color: var(--color-vermillion);
+}
+
+/* Encabezado */
+.main-content h2 {
+  color: var(--color-vermillion);
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* Tarjeta principal */
+.detail-card {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  padding: 25px;
+}
+
+/* Inputs */
+.form-control {
+  background-color: #f9fafc;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  color: var(--color-vermillion);
+  font-weight: 500;
+}
+
+.form-control:focus {
+  border-color: var(--color-sunshine);
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--color-sunshine);
+}
+
+/* Carrusel */
+.carousel {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.carousel-inner {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.carousel-inner img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.carousel-inner img:hover {
+  transform: scale(1.03);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
+}
+
+/* Mapa */
+.map-placeholder {
+  width: 100%;
+  height: 260px;
+  background-color: #f0f2f6;
+  border: 1px solid #e3e6ec;
+  border-radius: 10px;
+}
+
+/* Botones */
+.btn-sunshine {
+  background-color: var(--color-sunshine);
+  color: var(--color-white);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-sunshine:hover {
+  background-color: var(--color-vermillion);
+}
+
+.btn-outline-secondary {
+  border-color: var(--color-grisceletes);
+  color: var(--color-vermillion);
+  border-radius: 8px;
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--color-sunshine);
+  color: var(--color-white);
+}

@@ -1,0 +1,79 @@
+/* ========================== */
+/* VERIFICAR CÓDIGO DE LOGIN */
+/* ========================== */
+
+.verificar-login {
+  background-color: var(--color-clean);
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.verificar-login-card {
+  background-color: var(--color-white);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  padding: 40px 30px;
+}
+
+.verificar-login-card h3 {
+  color: var(--color-vermillion);
+  font-weight: 800;
+  text-align: center;
+}
+
+.verificar-login-card p {
+  color: var(--color-sunshine);
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* INPUT */
+.input-group .form-control {
+  border: 1px solid var(--color-sunshine);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  color: var(--color-vermillion);
+}
+
+.input-group-text {
+  background-color: var(--color-sunshine);
+  border: 1px solid var(--color-sunshine);
+  color: var(--color-white);
+  border-radius: 0 8px 8px 0;
+  transition: all 0.3s ease;
+}
+
+.input-group-text:hover {
+  background-color: var(--color-vermillion);
+}
+
+/* BOTÓN */
+.verificar-login-card .btn-primary {
+  border-radius: 30px;
+  padding: 10px 24px;
+  font-weight: 700;
+  background-color: var(--color-sunshine);
+  border: 1.5px solid var(--color-sunshine);
+  color: var(--color-white);
+  transition: all 0.3s ease;
+}
+
+.verificar-login-card .btn-primary:hover {
+  background-color: var(--color-vermillion);
+  border-color: var(--color-vermillion);
+  box-shadow: var(--shadow-md);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .verificar-login-card {
+    padding: 25px 20px;
+  }
+
+  .verificar-login-card h3 {
+    font-size: 1.6rem;
+  }
+}

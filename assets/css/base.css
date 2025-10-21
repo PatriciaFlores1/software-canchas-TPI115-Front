@@ -1,0 +1,38 @@
+/* ========================== */
+/* BASE - Variables y globales */
+/* ========================== */
+
+/* Paleta de colores */
+:root {
+  --color-vermillion: #333A56;
+  --color-sunshine: #52658F;
+  --color-clean: #F4F5F7;
+  --color-white: #FFFFFF;
+  --color-shadow: rgba(0, 0, 0, 0.05);
+  --color-grisceletes: #333A56;
+
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 6px 18px rgba(0,0,0,0.12);
+  --border-radius: 12px;
+}
+
+/* Fuente general */
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  background-color: var(--color-clean);
+  color: var(--color-vermillion);
+  line-height: 1.7;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Comportamiento de scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Estadísticas Generales - Administrador | Canchas SV</title>
+
+  <!-- Tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="../../libs/bootstrap/css/bootstrap.min.css">
+
+  <!-- Bootstrap Iconos -->
+  <link rel="stylesheet" href="../../assets/icons/bootstrap-icons.css">
+
+  <!-- Estilos globales -->
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/sidebar.css">
+  <link rel="stylesheet" href="../../assets/css/estadisticas.css">
+</head>
+
+<body>
+  <!-- SIDEBAR -->
+  <div id="sidebar-container"></div>
+
+  <!-- Botón fijo visible solo en móviles -->
+  <button id="mobile-menu-btn" class="mobile-menu-btn btn text-white">
+    <i class="bi bi-list fs-3"></i>
+  </button>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="main-content p-4">
+    <div class="container-fluid">
+
+      <!-- Encabezado -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Estadísticas Generales</h2>
+        <small class="text-secondary">Bienvenido, Administrador</small>
+      </div>
+
+      <!-- TARJETAS RESUMEN -->
+      <div class="row g-3 mb-4" id="cards-container">
+        <div class="col-md-4">
+          <div class="card summary-card text-center">
+            <div class="card-body">
+              <h6>Número de Canchas</h6>
+              <div class="spinner-border text-sunshine mt-2" role="status" style="width:1.5rem; height:1.5rem;">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card summary-card text-center">
+            <div class="card-body">
+              <h6>Usuarios Registrados</h6>
+              <div class="spinner-border text-sunshine mt-2" role="status" style="width:1.5rem; height:1.5rem;">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card summary-card text-center">
+            <div class="card-body">
+              <h6>Reservas Totales</h6>
+              <div class="spinner-border text-sunshine mt-2" role="status" style="width:1.5rem; height:1.5rem;">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRÁFICA -->
+      <div class="card chart-card mb-4">
+        <div class="card-body text-center" id="chart-container">
+          <h6 class="mb-3">Resumen de Reservas Por Mes</h6>
+          <div class="spinner-border text-sunshine" role="status" style="width:2rem; height:2rem;">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <p class="mt-2 text-secondary small">Cargando gráfico de reservas...</p>
+        </div>
+      </div>
+
+      <!-- TABLA -->
+      <div class="card table-card">
+        <div class="card-body">
+          <h6 class="mb-3">Historial de Canchas Reservadas</h6>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Nombre de la Cancha</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Cliente</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-body">
+                <tr>
+                  <td colspan="5" class="text-center py-4">
+                    <div class="spinner-border text-sunshine" role="status" style="width:1.5rem; height:1.5rem;">
+                      <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mt-2 mb-0 text-secondary small">Cargando datos del historial...</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script src="../../libs/jquery/jquery.min.js"></script>
+  <script src="../../libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script src="../../assets/js/sidebar.js"></script>
+  <script src="../../assets/js/administrador/estadisticas.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../../assets/js/administrador/estadisticas.js"></script>
+</body>
+</html>

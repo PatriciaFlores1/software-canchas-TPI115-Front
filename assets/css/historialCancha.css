@@ -1,0 +1,94 @@
+/* ======================================= */
+/* HISTORIAL DE HORARIOS DE CANCHA         */
+/* ======================================= */
+
+body {
+  background-color: var(--color-clean);
+  font-family: 'Nunito Sans', sans-serif;
+  color: var(--color-vermillion);
+}
+
+/* Encabezado */
+.main-content h2 {
+  color: var(--color-vermillion);
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.btn-link.text-sunshine {
+  color: var(--color-sunshine);
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.btn-link.text-sunshine:hover {
+  color: var(--color-vermillion);
+}
+
+/* Tarjeta principal */
+.horarios-card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  padding: 25px;
+  border: none; /* sin línea oscura */
+}
+
+/* Cada bloque de día semana*/
+.day-section {
+  background-color: #f9fafc; /* tono suave */
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 18px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.day-section:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Título del día */
+.day-title {
+  color: var(--color-sunshine);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+/* Horarios individuales */
+.horario-item {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 12px 15px;
+  color: var(--color-vermillion);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.25s ease;
+  border: none; /* sin línea */
+}
+
+.horario-item:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  background-color: #fefefe;
+}
+
+.horario-item strong {
+  color: var(--color-sunshine);
+}
+
+.text-muted {
+  color: #6b7280 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .horario-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}

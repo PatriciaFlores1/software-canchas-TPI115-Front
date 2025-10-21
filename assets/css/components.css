@@ -1,0 +1,110 @@
+/* ========================== */
+/* COMPONENTES GLOBALES */
+/* ========================== */
+
+/* NAVBAR */
+.navbar {
+  background-color: var(--color-white) !important;
+  box-shadow: 0 3px 8px var(--color-shadow);
+}
+
+.navbar-brand {
+  color: var(--color-vermillion) !important;
+  font-weight: 700;
+}
+
+.nav-link {
+  color: var(--color-sunshine) !important;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-vermillion) !important;
+}
+
+/* BOTONES */
+.btn-primary {
+  background-color: var(--color-sunshine);
+  border: 1.5px solid var(--color-sunshine);
+  color: var(--color-white);
+  border-radius: 30px;
+  padding: 10px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-vermillion);
+  border-color: var(--color-vermillion);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline-secondary {
+  border: 1.5px solid var(--color-sunshine);
+  color: var(--color-sunshine);
+  border-radius: 30px;
+  padding: 10px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary.active {
+  background-color: var(--color-sunshine);
+  color: var(--color-white);
+  box-shadow: var(--shadow-md);
+}
+
+/* FORMULARIOS */
+.form-control {
+  border: 1px solid var(--color-sunshine);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--color-vermillion);
+  background-color: var(--color-white);
+  font-size: 0.95rem;
+}
+
+.form-control::placeholder {
+  color: #9CA3AF;
+}
+
+.form-control:focus {
+  border-color: var(--color-vermillion);
+  box-shadow: 0 0 5px rgba(82, 101, 143, 0.3);
+}
+
+/* CARDS */
+.card {
+  border: none;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+/* FOOTER */
+footer {
+  background-color: var(--color-vermillion);
+  color: var(--color-white);
+  padding: 10px 0;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+footer a {
+  color: var(--color-white);
+  font-size: 1.2rem;
+  margin: 0 8px;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: var(--color-sunshine);
+}

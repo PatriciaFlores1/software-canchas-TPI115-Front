@@ -1,0 +1,76 @@
+// sidebar.js
+(function () {
+  const menuContainer = document.getElementById("sidebar-menu");
+  if (!menuContainer) return;
+
+  // --- Rol actual (simulado) ---
+  const rolUsuario = "administrador";
+
+  // --- Menús por rol ---
+  const menus = {
+    administrador: [
+      { icon: "bi-graph-up", label: "Estadísticas" },
+      { icon: "bi-gear", label: "Gestión de Canchas" },
+      { icon: "bi-people", label: "Gestión de Usuarios" },
+      { icon: "bi-calendar-check", label: "Gestión de Reservas" },
+      { icon: "bi-person", label: "Perfil" },
+    ],
+    propietario: [
+      { icon: "bi-graph-up", label: "Estadísticas" },
+      { icon: "bi-folder2-open", label: "Mis Canchas" },
+      { icon: "bi-cash-coin", label: "Ingresos" },
+      { icon: "bi-person", label: "Perfil" },
+    ],
+    cliente: [
+      { icon: "bi-search", label: "Explorar" },
+      { icon: "bi-folder2-open", label: "Mis Canchas" },
+      { icon: "bi-person", label: "Perfil" },
+    ],
+  };
+
+  // --- Renderizar el menú ---
+  menus[rolUsuario].forEach((item) => {
+    const link = document.createElement("a");
+    link.href = "#";
+    link.classList.add("sidebar-link");
+    link.innerHTML = `<i class="${item.icon}" title="${item.label}"></i><span>${item.label}</span>`;
+    menuContainer.appendChild(link);
+  });
+
+  // --- Elementos principales ---
+  const sidebar = document.querySelector(".sidebar");
+  const toggleBtn = document.getElementById("sidebar-toggle");
+  const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+
+  // Crear overlay si no existe
+  let overlay = document.querySelector(".sidebar-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.classList.add("sidebar-overlay");
+    document.body.appendChild(overlay);
+  }
+
+  // --- Función general para alternar ---
+  function toggleSidebar() {
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+      const isOpen = sidebar.classList.toggle("open");
+      overlay.classList.toggle("active", isOpen);
+      document.body.classList.toggle("no-scroll", isOpen);
+    } else {
+      sidebar.classList.toggle("collapsed");
+    }
+  }
+
+  // Botones
+  if (toggleBtn) toggleBtn.addEventListener("click", toggleSidebar);
+  if (mobileMenuBtn) mobileMenuBtn.addEventListener("click", toggleSidebar);
+
+  // Cerrar al hacer clic fuera (modo móvil)
+  overlay.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("active");
+    document.body.classList.remove("no-scroll");
+  });
+})();

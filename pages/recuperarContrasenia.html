@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar Contraseña - Canchas SV</title>
+
+  <!-- Tipografía Nunito Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="../assets/icons/bootstrap-icons.css">
+
+  <!-- Estilos personalizados -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="recuperar-page">
+
+  <!-- NAVBAR -->
+  <div id="navbar-container"></div>
+
+  <!-- SECCIÓN PRINCIPAL -->
+  <section class="recuperar d-flex align-items-center justify-content-center py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+          <div class="card recuperar-card p-4 shadow-sm border-0">
+            <h3 class="text-center fw-bold mb-3">Recuperar Contraseña</h3>
+            <p class="text-center text-muted mb-4">
+              Te enviaremos un código para restablecer tu contraseña.
+            </p>
+
+            <form>
+              <div class="mb-3">
+                <label for="correo" class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <input type="email" class="form-control" id="correo" placeholder="ejemplo@correo.com">
+                  <span class="input-group-text">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 mt-3">Enviar código de recuperación</button>
+
+              <p class="text-center mt-3 text-muted" style="font-size: 0.9rem;">
+                ¿Aún no recibes el código?
+                <a href="#" class="text-decoration-none text-primary">Reenviar</a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div id="footer-container"></div>
+
+  <!-- JS -->
+  <script src="../libs/jquery/jquery.min.js"></script>
+  <script src="../libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

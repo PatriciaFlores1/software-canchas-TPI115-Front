@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificar Cuenta - Canchas SV</title>
+
+  <!-- Tipografía Nunito Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+
+  <!-- Bootstrap iconos -->
+  <link rel="stylesheet" href="../assets/icons/bootstrap-icons.css">
+
+  <!-- Estilos personalizados -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="verificar-page">
+
+  <!-- NAVBAR -->
+  <div id="navbar-container"></div>
+
+  <!-- SECCIÓN DE VERIFICACIÓN -->
+  <section class="verificar d-flex align-items-center justify-content-center py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+          <div class="card verificar-card p-4 shadow-sm border-0">
+            <h3 class="text-center fw-bold mb-3">Crear tu Cuenta</h3>
+            <p class="text-center text-muted mb-4">
+              Ingresa el código enviado a tu correo electrónico
+            </p>
+
+            <form>
+              <div class="mb-4">
+                <label for="codigo" class="form-label">Ingresa el código <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="codigo" placeholder="Código de verificación">
+                  <span class="input-group-text">
+                    <i class="bi bi-shield-lock"></i>
+                  </span>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Crear Cuenta</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div id="footer-container"></div>
+
+  <!-- JS -->
+  <script src="../libs/jquery/jquery.min.js"></script>
+  <script src="../libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
