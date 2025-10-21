@@ -2,7 +2,7 @@
 
 class CanchasManager {
     constructor() {
-        this.apiUrl = 'http://localhost:3000/api'; // Cambia por tu URL del backend
+        this.apiUrl = 'http://localhost:3000/api';
         this.tabla = document.getElementById('cuerpo-tabla');
         this.loadingContainer = document.getElementById('loading-container');
         this.noDataMessage = document.getElementById('no-data-message');
@@ -87,9 +87,8 @@ class CanchasManager {
     }
 
     mostrarError(mensaje) {
-        // Puedes implementar un sistema de notificaciones aquí
         console.error(mensaje);
-        alert(mensaje); // Temporal - mejora esto con toast notifications
+        alert(mensaje);
     }
 
     agregarEventListeners() {
@@ -160,7 +159,7 @@ class CanchasManager {
         alert(mensaje); // Temporal
     }
 
-    // Métodos para editar y agregar (puedes expandirlos)
+    // Métodos para editar y agregar
     mostrarFormularioCancha(cancha = null) {
         // Implementar modal de formulario
         console.log(cancha ? 'Editar cancha:' : 'Agregar cancha', cancha);

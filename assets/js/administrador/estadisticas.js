@@ -71,7 +71,6 @@ class EstadisticasManager {
       const data = await res.json();
 
       if (data.success && data.data && data.data.length > 0) {
-        // Reemplazar loader por el canvas
         this.chartContainer.innerHTML = `
           <h6 class="mb-3">Resumen de Reservas Por Mes</h6>
           <canvas id="chartReservas"></canvas>
