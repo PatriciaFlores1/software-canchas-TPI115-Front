@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Añadir Nuevo Usuario - Administrador | Canchas SV</title>
+
+  <!-- Tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap.min.css" />
+  <!-- Iconos locales -->
+  <link rel="stylesheet" href="/public/assets/icons/bootstrap-icons.css" />
+
+  <!-- Estilos del proyecto (usa pages.css y variables base) -->
+  <link rel="stylesheet" href="/public/assets/css/style.css" />
+</head>
+<body>
+  <!-- Sidebar dinámico -->
+  <div id="sidebar-container"></div>
+
+  <!-- Botón móvil para abrir menú -->
+  <button id="mobile-menu-btn" class="mobile-menu-btn">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <div class="container-fluid">
+      <!-- Encabezado -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title mb-0">Añadir Nuevo Usuario</h2>
+        <small class="text-muted">Bienvenido, Administrador</small>
+      </div>
+
+      <!-- Formulario -->
+      <section class="page-content" style="max-width: 720px; margin-inline: auto;">
+        <form id="form-nuevo-usuario" novalidate>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre Completo <span class="text-danger">*</span></label>
+            <input id="nombre" name="nombre" type="text" class="form-control" placeholder="Ingrese el Nombre Completo" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="correo" class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
+            <input id="correo" name="correo" type="email" class="form-control" placeholder="example@example.com" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña <span class="text-danger">*</span></label>
+            <input id="password" name="password" type="password" class="form-control" placeholder="************" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="confirm" class="form-label">Confirmar Contraseña <span class="text-danger">*</span></label>
+            <input id="confirm" name="confirm" type="password" class="form-control" placeholder="************" required />
+          </div>
+
+          <div class="mb-4">
+            <label for="rol" class="form-label">Rol <span class="text-danger">*</span></label>
+            <select id="rol" name="rol" class="form-control" required>
+              <option value="">Seleccione el tipo de Rol</option>
+              <option value="Administrador">Administrador</option>
+              <option value="Propietario">Propietario</option>
+              <option value="Cliente">Cliente</option>
+            </select>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center">
+            <button id="btn-cancelar" class="btn btn-outline" type="button">Cancelar</button>
+            <button id="btn-guardar" class="btn btn-primary" type="submit">Guardar Usuario</button>
+          </div>
+
+          <div id="form-feedback" class="mt-3 small text-muted"></div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script src="/public/libs/jquery/jquery.min.js"></script>
+  <script src="/public/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/assets/js/main.js"></script>
+  <script src="/public/assets/js/administrador/gestion-nuevoUsuario.js"></script>
+</body>
+</html>
+

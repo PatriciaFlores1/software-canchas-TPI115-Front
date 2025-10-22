@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestión de Reservas - Administrador | Canchas SV</title>
+  <title>Estadísticas Generales - Propietario | Canchas SV</title>
 
   <!-- Tipografía -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -13,7 +13,7 @@
   <!-- Iconos locales -->
   <link rel="stylesheet" href="/public/assets/icons/bootstrap-icons.css" />
 
-  <!-- Estilos del proyecto -->
+  <!-- Estilos del proyecto (incluye pages.css) -->
   <link rel="stylesheet" href="/public/assets/css/style.css" />
 </head>
 <body>
@@ -29,40 +29,59 @@
   <main class="main-content">
     <div class="container-fluid">
       <!-- Encabezado -->
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="page-title mb-0">Gestión de Reservas</h2>
-        <small class="text-muted">Bienvenido, Administrador</small>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title mb-0">Estadísticas Generales</h2>
+        <small class="text-muted">Bienvenido, Propietario</small>
       </div>
 
-      <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-        <div class="input-group search-input-group rounded-pill" style="flex:1 1 320px; max-width: 540px;">
-          <span class="input-group-text" id="icon-search"><i class="bi bi-search"></i></span>
-          <input id="search" type="text" class="form-control" placeholder="Buscar por cancha o cliente" aria-describedby="icon-search" />
+      <!-- Tarjetas resumen -->
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+          <div class="stat-card h-100">
+            <h4>Número de Canchas</h4>
+            <div id="stat-canchas" class="value">—</div>
+          </div>
         </div>
-        <div class="input-group search-input-group rounded-pill" style="flex:0 0 220px; max-width: 240px;">
-          <input id="fecha" type="date" class="form-control" aria-label="Fecha" />
+        <div class="col-12 col-md-4">
+          <div class="stat-card h-100">
+            <h4>Usuarios Registrados</h4>
+            <div id="stat-usuarios" class="value">—</div>
+          </div>
         </div>
-        <button id="btn-filtrar" class="btn btn-primary" type="button"><i class="bi bi-funnel me-1"></i> Filtrar</button>
+        <div class="col-12 col-md-4">
+          <div class="stat-card h-100">
+            <h4>Reservas Totales</h4>
+            <div id="stat-reservas" class="value">—</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Tabla -->
-      <section class="page-content">
+      <!-- Gráfico -->
+      <div class="chart-container chart-fixed">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h5 class="mb-0">Resumen de Reservas por Mes</h5>
+        </div>
+        <canvas id="reservasPorMesPropChart"></canvas>
+      </div>
+
+      <!-- Historial (tabla estándar) -->
+      <section class="page-content mt-4">
+        <h5 class="mb-3">Historial de Canchas Reservadas</h5>
+
         <div class="table-standard">
           <div class="table-responsive">
             <table class="table align-middle mb-0">
               <thead>
                 <tr>
-                  <th>Cancha</th>
-                  <th>Cliente</th>
+                  <th>Nombre de la Cancha</th>
                   <th>Fecha</th>
                   <th>Hora</th>
-                  <th>Deporte</th>
-                  <th>Precio</th>
-                  <th>Estado</th>
-                  <th class="text-end">Acciones</th>
+                  <th>Cliente</th>
+                  <th class="text-end">Estado</th>
                 </tr>
               </thead>
-              <tbody id="tabla-reservas">
+              <tbody id="tabla-historial">
+                <!-- filas renderizadas por JS -->
               </tbody>
             </table>
           </div>
@@ -83,6 +102,8 @@
   <script src="/public/libs/jquery/jquery.min.js"></script>
   <script src="/public/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/public/assets/js/main.js"></script>
-  <script src="/public/assets/js/administrador/gestion-reservas.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/public/assets/js/propietario/gestion-estadisticas.js"></script>
 </body>
 </html>
+

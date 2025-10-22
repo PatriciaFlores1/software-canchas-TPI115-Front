@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Información de Cancha - Cliente | Canchas SV</title>
+
+  <!-- Tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap.min.css" />
+  <!-- Iconos locales -->
+  <link rel="stylesheet" href="/public/assets/icons/bootstrap-icons.css" />
+
+  <!-- Estilos del proyecto -->
+  <link rel="stylesheet" href="/public/assets/css/style.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <div id="sidebar-container"></div>
+
+  <button id="mobile-menu-btn" class="mobile-menu-btn">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="text-center mb-4">
+        <h1 class="fw-bold display-6">Encuentra tu cancha perfecta</h1>
+      </section>
+
+      <div class="row g-3">
+        <!-- Galería + Información -->
+        <div class="col-12 col-lg-7">
+          <section class="page-content">
+            <!-- Carrusel de imágenes -->
+            <div id="galeria" class="carousel slide mb-3" data-bs-ride="carousel">
+              <div class="carousel-indicators" id="galeria-indicadores"><!-- por JS --></div>
+              <div class="carousel-inner" id="galeria-inner"><!-- por JS --></div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#galeria" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#galeria" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+              </button>
+            </div>
+
+            <h3 id="cancha-nombre" class="mb-1">Nombre Cancha</h3>
+            <div id="cancha-meta" class="text-muted mb-3">Deporte · Dirección</div>
+            <p id="cancha-descripcion" class="mb-0">Descripción</p>
+          </section>
+        </div>
+
+        <!-- Disponibilidad -->
+        <div class="col-12 col-lg-5">
+          <section class="page-content">
+            <h5 class="mb-1">Disponibilidad</h5>
+            <small class="text-muted">Selecciona una fecha para ver los horarios disponibles y reserva tu espacio.</small>
+
+            <!-- Calendario -->
+            <div class="calendar-header mt-3">
+              <button id="cal-prev" class="btn btn-outline btn-sm" type="button" aria-label="Mes anterior"><i class="bi bi-chevron-left"></i></button>
+              <h6 id="cal-title" class="mb-0">Mes, Año</h6>
+              <button id="cal-next" class="btn btn-outline btn-sm" type="button" aria-label="Mes siguiente"><i class="bi bi-chevron-right"></i></button>
+            </div>
+            <div id="cal-grid" class="calendar-grid mb-3"><!-- por JS --></div>
+
+            <hr/>
+            <div class="mb-2"><strong>Precio por hora</strong> <span id="cancha-precio" class="ms-2">$0.00</span></div>
+            <div class="mb-3">
+              <strong>Condiciones de uso</strong>
+              <div id="cancha-condiciones" class="text-muted small">
+                —
+              </div>
+            </div>
+
+            <h6 id="slots-titulo" class="text-center">Horarios para la fecha seleccionada</h6>
+            <div id="slots-list" class="mt-2" style="max-height: 260px; overflow-y: auto;">
+              <!-- Cajas de horarios por JS -->
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script src="/public/libs/jquery/jquery.min.js"></script>
+  <script src="/public/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/assets/js/main.js"></script>
+  <script src="/public/assets/js/cliente/gestion-infoCancha.js"></script>
+</body>
+</html>
+

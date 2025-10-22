@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reserva tu Cancha - Cliente | Canchas SV</title>
+
+  <!-- Tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap.min.css" />
+  <!-- Iconos locales -->
+  <link rel="stylesheet" href="/public/assets/icons/bootstrap-icons.css" />
+
+  <!-- Estilos del proyecto (usa pages.css y variables base) -->
+  <link rel="stylesheet" href="/public/assets/css/style.css" />
+</head>
+<body>
+  <!-- Sidebar dinámico -->
+  <div id="sidebar-container"></div>
+  <button id="mobile-menu-btn" class="mobile-menu-btn"><i class="bi bi-list"></i></button>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <div class="container" style="max-width: 980px;">
+      <h2 class="page-title text-center">Reserva tu Cancha</h2>
+
+      <!-- Paso y barra de progreso -->
+      <section class="page-content mb-3">
+        <div class="text-center mb-2 small text-muted">Paso <span id="step-current">2</span> de <span id="step-total">3</span></div>
+        <div class="progress" role="progressbar" aria-label="Progreso de reserva" style="height: 10px;">
+          <div id="progress-bar" class="progress-bar" style="width: 66%; background-color: var(--color-sunshine);"></div>
+        </div>
+      </section>
+
+      <!-- 1. Resumen de la Reserva -->
+      <section class="page-content mb-3">
+        <div class="d-flex align-items-start gap-3">
+          <img id="resumen-imagen" src="/public/assets/img/tenis.png" alt="Cancha" style="width: 160px; height: 120px; object-fit: cover; border-radius: var(--border-radius); box-shadow: var(--shadow-sm);" />
+          <div class="row flex-grow-1 g-2">
+            <div class="col-6 col-md-4"><strong>Cancha</strong><div id="resumen-cancha" class="text-muted">—</div></div>
+            <div class="col-6 col-md-4"><strong>Fecha</strong><div id="resumen-fecha" class="text-muted">—</div></div>
+            <div class="col-6 col-md-2"><strong>Duración</strong><div id="resumen-duracion" class="text-muted">—</div></div>
+            <div class="col-6 col-md-2"><strong>Hora</strong><div id="resumen-hora" class="text-muted">—</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Información de Usuario -->
+      <section class="page-content mb-3">
+        <h5 class="mb-3">2. Información de Usuario</h5>
+        <form id="form-usuario" class="row g-3" novalidate>
+          <div class="col-12 col-md-6">
+            <label class="form-label">Nombre</label>
+            <input id="u-nombre" type="text" class="form-control" placeholder="Juan" />
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label">Apellidos</label>
+            <input id="u-apellido" type="text" class="form-control" placeholder="Pérez" />
+          </div>
+          <div class="col-12">
+            <label class="form-label">Correo</label>
+            <input id="u-correo" type="email" class="form-control" placeholder="juan.perez@example.com" />
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label">Teléfono</label>
+            <input id="u-telefono" type="text" class="form-control" placeholder="0000-0000" />
+          </div>
+        </form>
+      </section>
+
+      <!-- 3. Pago -->
+      <section class="page-content mb-4">
+        <h5 class="mb-3">3. Pago</h5>
+        <div class="row g-3">
+          <div class="col-12 col-lg-7">
+            <div class="page-content">
+              <div id="opt-paypal" class="payment-option" role="button" tabindex="0" aria-pressed="false">
+                <input class="form-check-input" type="radio" name="metodo" id="p-paypal" />
+                <label class="form-check-label" for="p-paypal">PayPal Sandbox</label>
+              </div>
+              <div id="paypal-button-container" class="mt-3" style="display:none;"></div>
+              <div id="paypal-fallback" class="small text-muted" style="display:none;">No se pudo cargar PayPal. Intenta nuevamente o verifica tu conexión.</div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-5">
+            <div class="table-standard">
+              <div class="table-responsive">
+                <table class="table mb-0">
+                  <tbody>
+                    <tr><th>SubTotal</th><td class="text-end" id="p-subtotal">$0.00</td></tr>
+                    <tr><th>Impuestos</th><td class="text-end" id="p-impuestos">$0.00</td></tr>
+                    <tr><th>Total</th><td class="text-end fw-bold" id="p-total">$0.00</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+          <button id="btn-confirmar" class="btn btn-primary" type="button">Confirmar y Pagar</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script src="/public/libs/jquery/jquery.min.js"></script>
+  <script src="/public/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/assets/js/main.js"></script>
+  <!-- PayPal SDK (Sandbox) - el client-id 'sb' es de pruebas -->
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD&disable-funding=card"></script>
+  <script src="/public/assets/js/cliente/gestion-pagoCancha.js"></script>
+</body>
+</html>

@@ -4,7 +4,7 @@
   if (!menuContainer) return;
 
   // --- Rol actual (simulado) ---
-  const rolUsuario = "administrador";
+  const rolUsuario = "administrador"; 
 
   // --- Menús por rol ---
   const menus = {
@@ -28,22 +28,26 @@
     ],
   };
 
-  // --- Renderizar el menú ---
+  // --- Renderizar el menú según rol ---
   function updateMenu(rol) {
-    menus[rol].forEach((item) => {
-      const link = document.createElement("a");
-      link.href = "#";
-      link.classList.add("sidebar-link");
-      link.innerHTML = `<i class="${item.icon}" title="${item.label}"></i><span>${item.label}</span>`;
-      menuContainer.appendChild(link);
-    });
+    menuContainer.innerHTML = "";
+    
+    if (menus[rol]) {
+      menus[rol].forEach((item) => {
+        const link = document.createElement("a");
+        link.href = "#";
+        link.classList.add("sidebar-link");
+        link.innerHTML = `
+          <i class="bi ${item.icon}" title="${item.label}"></i>
+          <span>${item.label}</span>
+        `;
+        menuContainer.appendChild(link);
+      });
+    }
   }
 
-  // Renderizar solo el menú correspondiente al rol actual
-  menuContainer.innerHTML = "";
-  updateMenu("administrador");
-  updateMenu("propietario");
-  updateMenu("cliente");
+  // Renderizar menú según el rol actual
+  updateMenu(rolUsuario);
 
   // --- Elementos principales ---
   const sidebar = document.querySelector(".sidebar");
@@ -66,14 +70,17 @@
       const isOpen = sidebar.classList.toggle("open");
       overlay.classList.toggle("active", isOpen);
       document.body.classList.toggle("no-scroll", isOpen);
-      // Ocultar/mostrar botón flotante en móvil para que no quede visible sobre el overlay
-      if (mobileMenuBtn) mobileMenuBtn.classList.toggle("d-none", isOpen);
+      
+      // Ocultar/mostrar botón flotante en móvil
+      if (mobileMenuBtn) {
+        mobileMenuBtn.style.display = isOpen ? "none" : "block";
+      }
     } else {
       sidebar.classList.toggle("collapsed");
     }
   }
 
-  // Botones
+  // Event listeners
   if (toggleBtn) toggleBtn.addEventListener("click", toggleSidebar);
   if (mobileMenuBtn) mobileMenuBtn.addEventListener("click", toggleSidebar);
 
@@ -82,7 +89,7 @@
     sidebar.classList.remove("open");
     overlay.classList.remove("active");
     document.body.classList.remove("no-scroll");
-    if (mobileMenuBtn) mobileMenuBtn.classList.remove("d-none");
+    if (mobileMenuBtn) mobileMenuBtn.style.display = "block";
   });
 
   // Cerrar con tecla ESC en móvil
@@ -91,7 +98,7 @@
       sidebar.classList.remove("open");
       overlay.classList.remove("active");
       document.body.classList.remove("no-scroll");
-      if (mobileMenuBtn) mobileMenuBtn.classList.remove("d-none");
+      if (mobileMenuBtn) mobileMenuBtn.style.display = "block";
     }
   });
 
@@ -101,7 +108,14 @@
       sidebar.classList.remove("open");
       overlay.classList.remove("active");
       document.body.classList.remove("no-scroll");
-      if (mobileMenuBtn) mobileMenuBtn.classList.remove("d-none");
+      if (mobileMenuBtn) mobileMenuBtn.style.display = "none";
+    } else {
+      if (mobileMenuBtn) mobileMenuBtn.style.display = "block";
     }
   });
+
+  // Inicializar estado en móvil
+  if (window.innerWidth <= 768 && mobileMenuBtn) {
+    mobileMenuBtn.style.display = "block";
+  }
 })();

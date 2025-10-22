@@ -93,9 +93,16 @@
 footer {
   background-color: var(--color-vermillion);
   color: var(--color-white);
-  padding: 10px 0;
+  padding: 15px 0;
   font-size: 0.9rem;
   text-align: center;
+  width: 100%;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+footer p {
+  margin: 0;
+  color: var(--color-white);
 }
 
 footer a {
@@ -106,5 +113,5 @@ footer a {
 }
 
 footer a:hover {
-  color: var(--color-sunshine);
+  color: var(--color-clean);
 }

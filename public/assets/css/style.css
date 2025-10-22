@@ -3,16 +3,6 @@
 /* ============================================= */
 @import url('base.css');
 @import url('components.css');
-@import url('index.css');
-@import url('login.css');
-@import url('registro.css');
-@import url('recuperarContrasenia.css');
-@import url('cambioContrasenia.css');
-@import url('verificarCuenta.css');
-@import url('verificarLogin.css');
-@import url('estadisticas.css');
-@import url('canchasAdmin.css');
-@import url('detalleCancha.css');
-@import url('historialCancha.css');
-@import url('gestionUsuarios.css');
-@import url('gestion-reservas.css');
+@import url('sidebar.css');
+@import url('auth/auth.css');
+@import url('pages/pages.css');

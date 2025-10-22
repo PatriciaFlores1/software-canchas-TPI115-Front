@@ -1,39 +1,30 @@
-/* ======================================================= */
-/* COMPONENTE: SIDEBAR - Sistema Canchas SV                */
-/* ======================================================= */
+/* ======= */
+/* SIDEBAR */
+/* ======= */
 
-/* Contenedor general del sidebar */
 .sidebar {
-  background-color: var(--color-grisceletes);
+  background-color: var(--color-white);
   width: 240px;
-  height: 100vh; /* asegurar altura fija del viewport */
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 20px 15px;
+  padding: 20px 15px 0 15px;
   box-shadow: var(--shadow-md);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
   transition: width 0.3s ease;
-  overflow: hidden; /* el scroll solo en el contenedor del menú */
+  border-right: 1px solid #e6e8ef;
+  overflow: hidden;
 }
 
-/* ======================================== */
-/* HEADER: Logo y botón toggle              */
-/* ======================================== */
 .sidebar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.sidebar-logo {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  gap: 8px;
+  flex-shrink: 0;
+  height: 60px;
 }
 
 .sidebar-logo img {
@@ -42,143 +33,123 @@
 }
 
 .sidebar-logo h5 {
-  color: var(--color-white);
+  color: var(--color-vermillion);
   font-weight: 700;
   margin: 0;
   letter-spacing: 0.5px;
 }
 
 .sidebar-logo span {
-  color: var(--color-clean);
+  color: var(--color-sunshine);
   font-weight: 400;
 }
 
-/* Botón toggle */
 .sidebar-toggle {
   background: transparent;
   border: none;
-  color: var(--color-white);
+  color: var(--color-vermillion);
   cursor: pointer;
   transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .sidebar-toggle:hover {
   transform: scale(1.1);
-  color: var(--color-clean);
+  color: var(--color-sunshine);
 }
 
-/* ======================================== */
-/* Menú dinámico (items generados por JS)   */
-/* ======================================== */
 #sidebar-menu {
-  margin-top: 20px;
-  display: flex !important;
-  flex-direction: column !important;
-  flex-wrap: nowrap !important; /* forzar una sola columna */
-  align-items: stretch;
-  width: 100%;
-  gap: 10px;
-  /* Permitir scroll del listado cuando existan muchos items */
-  flex: 1 1 auto;
-  min-height: 0; /* necesario para que el flex-child pueda hacer overflow */
-  overflow-y: auto;   /* scroll vertical */
-  overflow-x: hidden; /* evitar scroll horizontal */
-  -webkit-overflow-scrolling: touch; /* suaviza en iOS */
-  overscroll-behavior: contain;
-  
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 5px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-sunshine) #f0f1f3;
+  max-height: calc(100vh - 180px);
 }
 
-/* Scrollbar estilizado: 1px de ancho (WebKit) */
 #sidebar-menu::-webkit-scrollbar {
-  width: 1px;
+  width: 6px;
 }
 
 #sidebar-menu::-webkit-scrollbar-track {
-  background: transparent;
+  background: #f0f1f3;
+  border-radius: 10px;
 }
 
 #sidebar-menu::-webkit-scrollbar-thumb {
-  background-color: #ffffff;
-  border-radius: 8px;
-}
-
-/* Firefox: no permite 1px exacto; usar thin */
-#sidebar-menu {
-  scrollbar-width: thin; /* aprox. */
-  scrollbar-color: rgb(255, 255, 255) transparent;
-}
-
-/* Botones del menú */
-.sidebar-link {
   background-color: var(--color-sunshine);
-  color: var(--color-white);
+  border-radius: 10px;
+  border: 2px solid #f0f1f3;
+}
+
+#sidebar-menu::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-vermillion);
+}
+
+.sidebar-link {
+  background-color: transparent;
+  color: var(--color-vermillion);
   text-decoration: none;
   border-radius: 10px;
-  padding: 10px 14px;
+  padding: 12px 14px;
   font-weight: 600;
   font-size: 0.95rem;
   display: flex;
-  width: 100%;
-  flex: 0 0 auto; /* no permitir que rompan a más columnas */
   align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-sm);
-  letter-spacing: 0.3px;
+  gap: 12px;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .sidebar-link i {
   font-size: 1.1rem;
+  color: var(--color-sunshine);
+  min-width: 24px;
+  text-align: center;
 }
 
-/* Hover y activo */
 .sidebar-link:hover,
 .sidebar-link.active {
-  background-color: var(--color-vermillion);
-  color: var(--color-white);
-  box-shadow: var(--shadow-md);
-  transform: translateX(3px);
+  background-color: var(--color-clean);
+  color: var(--color-vermillion);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
 }
 
-/* ======================================== */
-/* Footer del sidebar (perfil + salir)      */
-/* ======================================== */
 .sidebar-footer {
-  margin-top: auto;
   text-align: center;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 15px 0;
+  border-top: 1px solid #e6e8ef;
+  flex-shrink: 0;
+  background-color: var(--color-white);
+  margin-top: auto;
 }
 
 .sidebar-footer i.bi-person-circle {
   font-size: 2rem;
-  color: var(--color-white);
-  margin-bottom: 8px;
+  color: var(--color-sunshine);
 }
 
 .sidebar-footer .logout a {
-  color: var(--color-white);
+  color: var(--color-vermillion);
   font-weight: 600;
-  font-size: 0.9rem;
   text-decoration: none;
-  transition: all 0.3s ease;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  transition: color 0.3s ease;
 }
 
 .sidebar-footer .logout a:hover {
-  color: var(--color-clean);
+  color: var(--color-sunshine);
 }
 
-.sidebar-footer .logout i {
-  margin-right: 6px;
-}
-
-/* ======================================== */
-/* ESTADOS: SIDEBAR                         */
-/* ======================================== */
 .sidebar.collapsed {
   width: 80px;
 }
@@ -189,89 +160,18 @@
   display: none;
 }
 
-.sidebar.collapsed .sidebar-logo img {
-  margin: 0 auto;
-}
-
-.sidebar.collapsed #sidebar-menu a {
-  justify-content: center;
-  padding: 10px;
-}
-
-.sidebar.collapsed #sidebar-menu i {
-  margin-right: 0;
-}
-
-.sidebar.collapsed .sidebar-footer {
-  border-top: none;
-}
-
-/* Asegurar visibilidad del botón toggle */
-.sidebar.collapsed .sidebar-toggle {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: transparent;
-  z-index: 2000;
-}
-
-/* ======================================== */
-/* Adaptación para pantallas pequeñas       */
-/* ======================================== */
-@media (max-width: 992px) {
-  .sidebar {
-    width: 210px;
-    padding: 15px 12px;
-  }
-
-  #sidebar-menu a {
-    font-size: 0.9rem;
-    padding: 8px 10px;
-  }
-}
-
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .sidebar {
-    position: fixed;
     left: -240px;
     transition: left 0.3s ease;
   }
-
   .sidebar.open {
     left: 0;
   }
-
-  #sidebar-toggle {
-    display: block;
-  }
 }
 
-/* ======================================== */
-/* Contenido principal                      */
-/* ======================================== */
-.main-content {
-  margin-left: 240px;
-  background-color: var(--color-clean);
-  min-height: 100vh;
-  padding: 30px;
-  transition: margin-left 0.3s ease;
-}
-
-.sidebar.collapsed ~ .main-content {
-  margin-left: 80px;
-}
-
-@media (max-width: 768px) {
-  .main-content {
-    margin-left: 0;
-  }
-}
-
-
-/* ======================================================= */
-/* MODO MÓVIL - Overlay y animación slide                  */
-/* ======================================================= */
-
+/* OVERLAY MÓVIL */
 .sidebar-overlay {
   position: fixed;
   top: 0;
@@ -291,52 +191,47 @@
   visibility: visible;
 }
 
-body.no-scroll {
-  overflow: hidden;
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    left: -240px;
-    transition: left 0.3s ease;
-  }
-
-  .sidebar.open {
-    left: 0;
-  }
-
-  .main-content {
-    margin-left: 0 !important;
-  }
-}
-
-
-/* =========================================== */
-/* BOTÓN FIJO DEL MENÚ PARA MÓVILES            */
-/* =========================================== */
+/* BOTÓN MÓVIL */
 .mobile-menu-btn {
   position: fixed;
   top: 15px;
   left: 15px;
-  background-color: var(--color-grisceletes);
+  background-color: var(--color-sunshine);
   color: var(--color-white);
   border: none;
-  z-index: 1200; 
+  z-index: 1200;
   padding: 6px 10px;
   border-radius: 8px;
   box-shadow: var(--shadow-md);
-  display: none; 
+  display: none;
   transition: all 0.3s ease;
 }
 
 .mobile-menu-btn:hover {
-  background-color: var(--color-sunshine);
+  background-color: var(--color-vermillion);
   transform: scale(1.05);
 }
 
-/* Mostrar solo en pantallas pequeñas */
 @media (max-width: 768px) {
   .mobile-menu-btn {
     display: block;
   }
+}
+
+/* CONTENIDO PRINCIPAL */
+.main-content {
+  margin-left: 240px;
+  transition: margin-left 0.3s ease;
+  background-color: var(--color-clean);
+  min-height: 100vh;
+  padding: 30px;
+}
+
+.sidebar.collapsed ~ .main-content {
+  margin-left: 80px;
+}
+
+/* Evitar scroll en body cuando sidebar está abierto en móvil */
+body.no-scroll {
+  overflow: hidden;
 }

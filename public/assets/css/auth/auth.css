@@ -1,0 +1,186 @@
+/* ======================================================= */
+/* AUTH & LANDING - Canchas SV                             */
+/* ======================================================= */
+
+/* ---------- SECCIÓN BASE ---------- */
+
+.auth-section,
+.hero,
+#nosotros {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.auth-section {
+  background-color: var(--color-clean);
+  min-height: calc(100vh - 60px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+/* ---------- TARJETAS / CONTENEDORES ---------- */
+
+.auth-card {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.auth-card h3 {
+  color: var(--color-vermillion);
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.auth-card p {
+  color: var(--color-sunshine);
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* ---------- INPUTS CON ICONOS ---------- */
+
+.input-group .form-control {
+  border: 1px solid var(--color-sunshine);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  color: var(--color-vermillion);
+}
+
+.input-group-text {
+  background-color: var(--color-sunshine);
+  border: 1px solid var(--color-sunshine);
+  color: var(--color-white);
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.input-group-text:hover {
+  background-color: var(--color-vermillion);
+}
+
+/* ---------- BOTONES ---------- */
+
+.btn-primary {
+  border-radius: 30px;
+  padding: 10px 24px;
+  font-weight: 700;
+  background-color: var(--color-sunshine);
+  border: 1.5px solid var(--color-sunshine);
+  color: var(--color-white);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-vermillion);
+  border-color: var(--color-vermillion);
+  box-shadow: var(--shadow-md);
+}
+
+/* ---------- LINKS / TEXTOS ---------- */
+
+.text-muted a {
+  color: var(--color-sunshine);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.text-muted a:hover {
+  color: var(--color-vermillion);
+  text-decoration: underline;
+}
+
+/* ---------- LANDING PAGE ---------- */
+
+.hero {
+  position: relative;
+  height: 90vh;
+  background: url('../../img/fondo.png') center center/cover no-repeat;
+  text-align: center;
+  color: var(--color-white);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(51, 58, 86, 0.55);
+  z-index: 0;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  font-weight: 800;
+  font-size: 3rem;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.hero p {
+  color: #E3E6EC;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* SOBRE NOSOTROS */
+#nosotros {
+  background-color: var(--color-white);
+  border-radius: 10px;
+  padding: 70px 0;
+  box-shadow: var(--shadow-sm);
+}
+
+#nosotros h2 {
+  color: var(--color-vermillion);
+  font-weight: 700;
+}
+
+#nosotros p {
+  color: var(--color-sunshine);
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 768px) {
+  .auth-card {
+    padding: 25px 20px;
+  }
+
+  .auth-card h3 {
+    font-size: 1.6rem;
+  }
+}
+
+/* ======================================================= */
+/* ESPECIALES POR PANTALLA                                 */
+/* ======================================================= */
+
+/* Cambio de contraseña */
+.cambiar .auth-card { max-width: 460px; }
+
+/* Recuperar contraseña */
+.recuperar .auth-card p { margin-bottom: 1.2rem; }
+
+/* Registro */
+.registro .auth-card p { margin-bottom: 1.2rem; }
+
+/* Verificar cuenta / login */
+.verificar .auth-card,
+.verificar-login .auth-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}

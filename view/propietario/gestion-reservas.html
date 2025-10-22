@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Reservas - Propietario | Canchas SV</title>
+
+  <!-- Tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap.min.css" />
+  <!-- Iconos locales -->
+  <link rel="stylesheet" href="/public/assets/icons/bootstrap-icons.css" />
+
+  <!-- Estilos del proyecto (usa pages.css y variables base) -->
+  <link rel="stylesheet" href="/public/assets/css/style.css" />
+</head>
+<body>
+  <!-- Sidebar dinámico -->
+  <div id="sidebar-container"></div>
+
+  <!-- Botón móvil para abrir menú -->
+  <button id="mobile-menu-btn" class="mobile-menu-btn">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <div class="container-fluid">
+      <!-- Encabezado -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="page-title mb-0">Gestión de Reservas</h2>
+        <small class="text-muted">Bienvenido, Propietario</small>
+      </div>
+
+      <div class="row g-3">
+        <!-- Calendario -->
+        <div class="col-12 col-lg-8">
+          <section class="calendar-card">
+            <div class="calendar-header">
+              <h5 id="calendar-title" class="mb-0">Mes Año</h5>
+              <div class="calendar-nav">
+                <button id="btn-prev" type="button" aria-label="Mes anterior"><i class="bi bi-chevron-left"></i></button>
+                <button id="btn-next" type="button" aria-label="Mes siguiente"><i class="bi bi-chevron-right"></i></button>
+              </div>
+            </div>
+            <div id="calendar-grid" class="calendar-grid">
+              <!-- Render por JS -->
+            </div>
+          </section>
+        </div>
+
+        <!-- Panel de reservas del día -->
+        <div class="col-12 col-lg-4">
+          <section class="reservas-panel">
+            <h6 class="mb-3">Detalle de Reserva - <span id="selected-date">—</span></h6>
+            <div id="reservas-list"><!-- tarjetas por JS --></div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Resumen de ingresos -->
+      <section class="page-content mt-3">
+        <h5 class="mb-3">Resumen de Ingresos Mensuales</h5>
+        <div class="chart-container chart-fixed">
+          <canvas id="ingresosChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Tabla estándar opcional: Top días con más reservas del mes -->
+      <section class="page-content mt-3">
+        <h5 class="mb-3">Top días del mes (reservas)</h5>
+        <div class="table-standard">
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Día</th>
+                  <th>Reservas</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-topdias"><!-- filas por JS --></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script src="/public/libs/jquery/jquery.min.js"></script>
+  <script src="/public/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/assets/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/public/assets/js/propietario/gestion-reservas.js"></script>
+</body>
+</html>
+

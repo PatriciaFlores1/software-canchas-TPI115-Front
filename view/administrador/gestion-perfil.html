@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil Personal - Administrador | Canchas SV</title>
+
+  <!-- Tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap.min.css" />
+  <!-- Iconos locales -->
+  <link rel="stylesheet" href="/public/assets/icons/bootstrap-icons.css" />
+
+  <!-- Estilos del proyecto -->
+  <link rel="stylesheet" href="/public/assets/css/style.css" />
+</head>
+<body>
+  <!-- Sidebar dinámico -->
+  <div id="sidebar-container"></div>
+
+  <!-- Botón móvil para abrir menú -->
+  <button id="mobile-menu-btn" class="mobile-menu-btn">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <div class="container-fluid">
+      <!-- Encabezado -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title mb-0">Perfil Personal</h2>
+        <small class="text-muted">Bienvenido, Administrador</small>
+      </div>
+
+      <div class="row g-3">
+        <!-- Perfil / Avatar -->
+        <div class="col-12 col-lg-4">
+          <section class="page-content text-center">
+            <div class="d-flex flex-column align-items-center">
+              <div id="avatar-wrap" class="mb-3" style="width: 160px; height: 160px; border-radius: 50%; overflow: hidden; background-color: var(--color-clean); display:flex; align-items:center; justify-content:center; box-shadow: var(--shadow-sm);">
+                <img id="avatar-preview" alt="Avatar" src="/public/assets/img/logo.png" style="width:100%; height:100%; object-fit:cover; display:none;" />
+                <i id="avatar-icon" class="bi bi-person-circle" style="font-size: 7rem; color: var(--color-sunshine);"></i>
+              </div>
+              <h5 class="mb-0" id="perfil-nombre">Juan Pérez</h5>
+              <small class="text-muted mb-3" id="perfil-rol">Administrador</small>
+              <input id="avatar-file" type="file" accept="image/*" class="d-none" />
+              <button id="btn-avatar" class="btn btn-outline" type="button">Cambiar Foto</button>
+            </div>
+          </section>
+        </div>
+
+        <!-- Información Personal -->
+        <div class="col-12 col-lg-8">
+          <section class="page-content">
+            <h5 class="mb-3">Información Personal</h5>
+            <form id="form-perfil" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Nombre</label>
+                  <input id="inp-nombre" type="text" class="form-control" placeholder="Juan" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Apellido</label>
+                  <input id="inp-apellido" type="text" class="form-control" placeholder="Pérez" />
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Correo</label>
+                  <input id="inp-correo" type="email" class="form-control" placeholder="juan.perez@example.com" />
+                </div>
+                <div class="col-12 col-md-6">
+                  <label class="form-label">Teléfono</label>
+                  <input id="inp-telefono" type="text" class="form-control" placeholder="0000-0000" />
+                </div>
+              </div>
+              <div class="d-flex justify-content-end mt-3">
+                <button id="btn-guardar" class="btn btn-primary" type="submit">Guardar</button>
+              </div>
+              <div id="perfil-feedback" class="mt-2 small text-muted"></div>
+            </form>
+          </section>
+
+          <!-- Cambiar contraseña -->
+          <section class="page-content mt-3">
+            <h5 class="mb-3">Cambiar Contraseña</h5>
+            <form id="form-password" novalidate>
+              <div class="mb-3">
+                <label class="form-label">Contraseña Actual</label>
+                <input id="pass-actual" type="password" class="form-control" placeholder="Ingrese la contraseña actual" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nueva Contraseña</label>
+                <input id="pass-nueva" type="password" class="form-control" placeholder="Nueva contraseña" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Repetir Nueva Contraseña</label>
+                <input id="pass-repetir" type="password" class="form-control" placeholder="Repetir nueva contraseña" />
+              </div>
+              <div class="d-flex justify-content-end">
+                <button id="btn-actualizar" class="btn btn-primary" type="submit">Actualizar</button>
+              </div>
+              <div id="password-feedback" class="mt-2 small text-muted"></div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script src="/public/libs/jquery/jquery.min.js"></script>
+  <script src="/public/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/assets/js/main.js"></script>
+  <script src="/public/assets/js/administrador/gestion-perfil.js"></script>
+</body>
+</html>
+
