@@ -1,0 +1,79 @@
+/* =============================== */
+/* MODALES GLOBALES - Canchas SV  */
+/* =============================== */
+
+.modal-content {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  background-color: var(--color-white);
+}
+
+.modal-success,
+.modal-error {
+  background-color: var(--color-white);
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.modal-success i,
+.modal-error i {
+  font-size: 3rem;
+  display: block;
+}
+
+.modal-success i {
+  color: #28a745;
+}
+
+.modal-error i {
+  color: #dc3545;
+}
+
+.modal-success h5,
+.modal-error h5 {
+  color: var(--color-vermillion);
+  font-weight: 700;
+}
+
+.modal-success p,
+.modal-error p {
+  color: var(--color-sunshine);
+  margin: 0;
+}
+
+.modal-success .btn-success {
+  background-color: var(--color-sunshine);
+  border: none;
+  color: var(--color-white);
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 8px 24px;
+  transition: all 0.3s ease;
+}
+
+.modal-success .btn-success:hover {
+  background-color: var(--color-vermillion);
+}
+
+.modal-error .btn-danger {
+  background-color: #a31010;
+  border: none;
+  color: var(--color-white);
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 8px 24px;
+}
+
+.modal-error .btn-primary {
+  background-color: var(--color-sunshine);
+  border: none;
+  color: var(--color-white);
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 8px 24px;
+}
+
+.modal-error .btn-primary:hover {
+  background-color: var(--color-vermillion);
+}

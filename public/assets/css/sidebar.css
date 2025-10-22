@@ -47,7 +47,7 @@
 .sidebar-toggle {
   background: transparent;
   border: none;
-  color: var(--color-vermillion);
+  color: var(--color-sunshine);
   cursor: pointer;
   transition: transform 0.3s ease, color 0.3s ease;
 }
@@ -69,7 +69,7 @@
   padding-right: 5px;
   scrollbar-width: thin;
   scrollbar-color: var(--color-sunshine) #f0f1f3;
-  max-height: calc(100vh - 180px);
+  max-height: none;
 }
 
 #sidebar-menu::-webkit-scrollbar {
@@ -158,6 +158,26 @@
 .sidebar.collapsed #sidebar-menu span,
 .sidebar.collapsed .sidebar-footer .logout span {
   display: none;
+}
+/* Al colapsar: ocultar completamente el bloque de logo, mantener menú (iconos) y footer */
+.sidebar.collapsed .sidebar-logo {
+  display: none;
+}
+
+/* Centrar los items cuando solo se muestran iconos */
+.sidebar.collapsed .sidebar-link {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sidebar.collapsed .sidebar-header {
+  justify-content: center;
+}
+
+/* Icono de logout al color de los iconos del menú */
+.sidebar-footer .logout i {
+  color: var(--color-sunshine);
 }
 
 /* RESPONSIVE */

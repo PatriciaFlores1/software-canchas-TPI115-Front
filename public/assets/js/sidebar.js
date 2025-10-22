@@ -4,7 +4,7 @@
   if (!menuContainer) return;
 
   // --- Rol actual (simulado) ---
-  const rolUsuario = "administrador"; 
+  const rolUsuario = "administrador";
 
   // --- Menús por rol ---
   const menus = {
@@ -37,6 +37,10 @@
         const link = document.createElement("a");
         link.href = "#";
         link.classList.add("sidebar-link");
+        link.title = item.label; // tooltip útil cuando está colapsado
+        link.setAttribute("data-bs-toggle", "tooltip");
+        link.setAttribute("data-bs-placement", "right");
+        link.setAttribute("data-bs-container", "body");
         link.innerHTML = `
           <i class="bi ${item.icon}" title="${item.label}"></i>
           <span>${item.label}</span>
