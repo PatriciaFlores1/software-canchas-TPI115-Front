@@ -1,8 +1,10 @@
 <?php
+require_once __DIR__ . '/../database/conexion.php';
 
 use Slim\App;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Infrastructure\Persistence\Database;
 
 return function (App $app) {
 
@@ -19,6 +21,26 @@ return function (App $app) {
         }
 
         $response->getBody()->write(json_encode($result));
+        return $response->withHeader('Content-Type', 'application/json');
+    });
+
+    $app->get('/api/v1/canchas/index', function (Request $request, Response $response) {
+        $result = ['status' => 'ok', 'data' => []];
+
+        try {
+            // Si tu proyecto usa composer autoload, asegúrate de incluirlo en la bootstrap de la app.
+            $db = new Database();
+            $conn = $db->getConnection();
+
+            $stmt = $conn->query('SELECT * FROM cancha');
+            $rows = $stmt->fetchAll();
+
+            $result['data'] = $rows;
+        } catch (Exception $e) {
+            $result = ['status' => 'error', 'message' => 'holaaaaaaa' . $e->getMessage()];
+        }
+
+        $response->getBody()->write(json_encode($result, JSON_UNESCAPED_UNICODE));
         return $response->withHeader('Content-Type', 'application/json');
     });
 
