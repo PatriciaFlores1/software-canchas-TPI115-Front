@@ -1,0 +1,115 @@
+meta {
+  name: Listar
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/v1/canchas
+  body: none
+  auth: inherit
+}
+
+docs {
+  # 📘 Obtener lista de canchas
+  
+  ## **GET /api/v1/canchas**
+  
+  ### 📝 **Descripción**
+  
+  Obtiene una lista paginada de todas las canchas registradas en el sistema.
+  
+  Cada cancha incluye su información básica, el tipo de deporte asociado y su estado actual.
+  
+  ---
+  
+  ### ⚙️ **Método HTTP**
+  
+  `GET`
+  
+  ---
+  
+  ### 🔗 **URL**
+  
+  `/api/v1/canchas`
+  
+  ---
+  
+  ### 🔍 **Parámetros (Query Params)**
+  
+  | Nombre | Tipo | Requerido | Descripción | Ejemplo |
+  | --- | --- | --- | --- | --- |
+  | `page` | integer | ❌ | Página a consultar (paginación) | `1` |
+  | `per_page` | integer | ❌ | Número de registros por página | `10` |
+  
+  > Si usas paginate(10) por defecto, per_page puede omitirse o controlarse a nivel del modelo.
+  > 
+  
+  ---
+  
+  ### 📤 **Respuesta exitosa (200 OK)**
+  
+  **Ejemplo de respuesta:**
+  
+  ```json
+  {
+    "data": [
+      {
+        "id_cancha": 1,
+        "nombre": "Cancha Principal",
+        "ubicacion": "Av. Central 123",
+        "id_tipo_deporte": 2,
+        "tipo_deporte": "Fútbol",
+        "id_estado": 1,
+        "estado": "Disponible"
+      },
+      {
+        "id_cancha": 2,
+        "nombre": "Cancha Norte",
+        "ubicacion": "Calle 45",
+        "id_tipo_deporte": 3,
+        "tipo_deporte": "Tenis",
+        "id_estado": 2,
+        "estado": "En mantenimiento"
+      }
+    ],
+    "pagination": {
+      "total": 25,
+      "per_page": 10,
+      "current_page": 1,
+      "last_page": 3,
+      "from": 1,
+      "to": 10
+    }
+  }
+  
+  ```
+  
+  ### 🧩 **Campos devueltos**
+  
+  | Campo | Tipo | Descripción |
+  | --- | --- | --- |
+  | `id_cancha` | integer | Identificador único de la cancha |
+  | `nombre` | string | Nombre de la cancha |
+  | `ubicacion` | string | Dirección o ubicación física |
+  | `id_tipo_deporte` | integer | ID del tipo de deporte asociado |
+  | `tipo_deporte` | string | Nombre del deporte (relación con `tipoDeporte`) |
+  | `id_estado` | integer | ID del estado de la cancha |
+  | `estado` | string | Descripción del estado actual (relación con `estado`) |
+  
+  ---
+  
+  ### ⚠️ **Respuestas de error**
+  
+  | Código | Descripción | Ejemplo |
+  | --- | --- | --- |
+  | `500 Internal Server Error` | Error inesperado al obtener las canchas | `json { "message": "Ocurrió un error al obtener las canchas", "error": "Detalles del error", "line": 123 }` |
+  
+  ---
+  
+  ### 🧭 **Notas adicionales**
+  
+  - La paginación se realiza automáticamente con `paginate(10)`.
+  - Las relaciones `tipoDeporte` y `estado` son opcionales (pueden ser `null`).
+  - Ideal para listados o vistas de administración de canchas.
+}

@@ -1,0 +1,64 @@
+meta {
+  name: Detalle
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/v1/canchas/detalle?id_cancha={{id_cancha}}
+  body: none
+  auth: inherit
+}
+
+docs {
+  # 📘 Obtener detalle de una cancha
+  
+  ## GET /api/v1/canchas/detalle
+  
+  ### Descripción
+  Retorna la información detallada y aplanada de una cancha, incluyendo sus fotos.
+  
+  ---
+  
+  ### Parámetros (Query Params)
+  
+  | Nombre | Tipo | Requerido | Descripción | Ejemplo |
+  | --- | --- | --- | --- | --- |
+  | `id_cancha` | integer | ✅ | ID de la cancha a consultar | `1` |
+  
+  ---
+  
+  ### Respuesta exitosa (200 OK)
+  
+  Ejemplo:
+  
+  ```json
+  {
+    "data": {
+      "id_cancha": 1,
+      "nombre": "Cancha Principal",
+      "id_tipo_deporte": 2,
+      "tipo_deporte": "Fútbol",
+      "ubicacion": "Av. Central 123",
+      "precio": 15.5,
+      "descripcion": "Pasto sintético, medidas oficiales",
+      "condiciones_uso": "No tacos metálicos",
+      "coordenadas": "13.7000,-89.2000",
+      "fotos": [
+        { "id_foto": 10, "id_cancha": 1, "url": "/public/img/canchas/1_1.jpg", "orden": 1 },
+        { "id_foto": 11, "id_cancha": 1, "url": "/public/img/canchas/1_2.jpg", "orden": 2 }
+      ]
+    }
+  }
+  ```
+  
+  ---
+  
+  ### Errores
+  
+  | Código | Descripción | Ejemplo |
+  | --- | --- | --- |
+  | `400` | Parámetro `id_cancha` inválido | `{ "message": "El parámetro id_cancha debe ser un entero válido" }` |
+  | `404` | Cancha no encontrada | `{ "message": "Cancha no encontrada" }` |
+  | `500` | Error inesperado | `{ "message": "Ocurrió un error al obtener la cancha", "error": "...", "line": 123 }` |
+}

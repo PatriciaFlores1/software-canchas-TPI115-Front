@@ -1,0 +1,41 @@
+meta {
+  name: Tipos de Deporte
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/v1/catalogos/tipos-deporte
+  body: none
+  auth: inherit
+}
+
+docs {
+  # 🏷️ Listar tipos de deporte
+  
+  ## GET /api/v1/catalogos/tipos-deporte
+  
+  ### Descripción
+  Devuelve todos los tipos de deporte sin paginación (para selects).
+  
+  ---
+  
+  ### Respuesta (200 OK)
+  
+  ```json
+  {
+    "data": [
+      { "id_tipo_deporte": 1, "nombre": "Fútbol" },
+      { "id_tipo_deporte": 2, "nombre": "Tenis" }
+    ]
+  }
+  ```
+  
+  ---
+  
+  ### Errores
+  
+  | Código | Descripción |
+  | --- | --- |
+  | `500` | `{ "message": "Ocurrió un error al obtener los tipos de deporte", "error": "...", "line": 123 }` |
+}

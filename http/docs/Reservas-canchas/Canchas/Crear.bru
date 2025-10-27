@@ -1,0 +1,97 @@
+meta {
+  name: Crear
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/api/v1/canchas
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  nombre: Cancha Nueva
+  id_tipo_deporte: 2
+  ubicacion: Av. Central 123
+  precio_hora: 15.5
+  descripcion: Pasto sintético
+  condiciones_uso: No tacos metálicos
+  coordenada: 13.7000,-89.2000
+  fotos[]: @file(/path/to/foto1.jpg)
+  fotos[]: @file(/path/to/foto2.jpg)
+}
+
+docs {
+  # ➕ Crear cancha
+  
+  ## POST /api/v1/canchas
+  
+  ### Descripción
+  Crea una nueva cancha. Si no se envía `id_estado`, se asigna ACTIVO por defecto.
+  
+  **IMPORTANTE:** Si envías fotos, el Content-Type debe ser `multipart/form-data`.
+  
+  ---
+  
+  ### Cuerpo (multipart/form-data)
+  
+  Campos principales:
+  - `nombre` (string)
+  - `id_tipo_deporte` (integer)
+  - `ubicacion` (string)
+  - `precio_hora` (number)
+  - `descripcion` (string)
+  - `condiciones_uso` (string)
+  - `coordenada` (string)
+  - `id_estado` (integer, opcional - default: ACTIVO)
+  - `fotos[]` (file[], opcional - múltiples archivos)
+  
+  Ejemplo de request (form-data):
+  ```
+  nombre: Cancha Nueva
+  id_tipo_deporte: 2
+  ubicacion: Av. Central 123
+  precio_hora: 15.5
+  descripcion: Pasto sintético
+  condiciones_uso: No tacos metálicos
+  coordenada: 13.7000,-89.2000
+  fotos[]: [archivo1.jpg]
+  fotos[]: [archivo2.jpg]
+  ```
+  
+  Las fotos se guardan en `/public/assets/img/canchas/` con nombre: `{id_cancha}_{timestamp}_{index}.{ext}`
+  
+  ---
+  
+  ### Respuesta exitosa (200 OK)
+  
+  ```json
+  {
+    "message": "Cancha creada exitosamente",
+    "data": {
+      "id_cancha": 10,
+      "nombre": "Cancha Nueva",
+      "id_tipo_deporte": 2,
+      "tipo_deporte": "Fútbol",
+      "ubicacion": "Av. Central 123",
+      "precio": 15.5,
+      "descripcion": "Pasto sintético",
+      "condiciones_uso": "No tacos metálicos",
+      "coordenadas": "13.7000,-89.2000",
+      "fotos": [
+        { "id_foto": 20, "id_cancha": 10, "url_foto": "/public/assets/img/canchas/10_1735228800_0.jpg" },
+        { "id_foto": 21, "id_cancha": 10, "url_foto": "/public/assets/img/canchas/10_1735228800_1.jpg" }
+      ]
+    }
+  }
+  ```
+  
+  ---
+  
+  ### Errores
+  
+  | Código | Descripción |
+  | --- | --- |
+  | `500` | `{ "message": "Ocurrió un error al crear la cancha", "error": "...", "line": 123 }` |
+}

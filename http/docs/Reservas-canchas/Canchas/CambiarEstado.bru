@@ -1,0 +1,55 @@
+meta {
+  name: Cambiar estado
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{base_url}}/api/v1/canchas/estado?id_cancha={{id_cancha}}
+  body: none
+  auth: inherit
+}
+
+docs {
+  # 🔄 Cambiar estado de una cancha
+  
+  ## PATCH /api/v1/canchas/estado
+  
+  ### Descripción
+  Alterna el estado de la cancha entre ACTIVO e INACTIVO. El estado actual se determina y se cambia automáticamente.
+  
+  ---
+  
+  ### Parámetros (Query Params)
+  
+  | Nombre | Tipo | Requerido | Descripción |
+  | --- | --- | --- | --- |
+  | `id_cancha` | integer | ✅ | ID de la cancha cuyo estado se cambiará |
+  
+  ---
+  
+  ### Respuesta exitosa (200 OK)
+  
+  ```json
+  {
+    "message": "Cancha desactivada exitosamente",
+    "data": {
+      "id_cancha": 1,
+      "id_estado": 2,
+      "estado": "Inactivo"
+    }
+  }
+  ```
+  
+  Nota: El mensaje puede ser "Cancha activada exitosamente" o "Cancha desactivada exitosamente" según el resultado.
+  
+  ---
+  
+  ### Errores
+  
+  | Código | Descripción |
+  | --- | --- |
+  | `400` | `{ "message": "El parámetro id_cancha debe ser un entero válido" }` |
+  | `404` | `{ "message": "Cancha no encontrada" }` |
+  | `500` | `{ "message": "Ocurrió un error al cambiar el estado de la cancha", "error": "...", "line": 123 }` |
+}

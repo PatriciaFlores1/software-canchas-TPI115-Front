@@ -1,0 +1,42 @@
+meta {
+  name: Estados
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/v1/catalogos/estados
+  body: none
+  auth: inherit
+}
+
+docs {
+  # 🏷️ Listar estados
+  
+  ## GET /api/v1/catalogos/estados
+  
+  ### Descripción
+  Devuelve todos los estados sin paginación (para selects).
+  
+  ---
+  
+  ### Respuesta (200 OK)
+  
+  ```json
+  {
+    "data": [
+      { "id_estado": 1, "nombre": "Activo" },
+      { "id_estado": 2, "nombre": "Inactivo" },
+      { "id_estado": 3, "nombre": "Pendiente" }
+    ]
+  }
+  ```
+  
+  ---
+  
+  ### Errores
+  
+  | Código | Descripción |
+  | --- | --- |
+  | `500` | `{ "message": "Ocurrió un error al obtener los estados", "error": "...", "line": 123 }` |
+}

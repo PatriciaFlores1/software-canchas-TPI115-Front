@@ -1,0 +1,101 @@
+meta {
+  name: Actualizar
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base_url}}/api/v1/canchas
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  id_cancha: 1
+  nombre: Cancha Principal (renovada)
+  precio_hora: 18.0
+  descripcion: Nueva iluminación LED
+  fotos[]: @file(/path/to/nueva_foto.jpg)
+}
+
+docs {
+  # ✏️ Actualizar cancha
+  
+  ## PUT /api/v1/canchas
+  
+  ### Descripción
+  Actualiza los datos de una cancha. Devuelve el objeto actualizado en formato aplanado, incluyendo las fotos.
+  
+  **IMPORTANTE:** Si envías fotos nuevas, el Content-Type debe ser `multipart/form-data`. Las fotos se AGREGAN a las existentes.
+  
+  ---
+  
+  ### Cuerpo (multipart/form-data o JSON)
+  
+  Debe incluir `id_cancha` y los campos a actualizar. Campos admitidos:
+  
+  - `id_cancha` (integer, requerido)
+  - `nombre` (string)
+  - `id_tipo_deporte` (integer)
+  - `ubicacion` (string)
+  - `precio_hora` (number)
+  - `descripcion` (string)
+  - `condiciones_uso` (string)
+  - `coordenada` (string)
+  - `fotos[]` (file[], opcional - múltiples archivos para agregar)
+  
+  Ejemplo form-data:
+  ```
+  id_cancha: 1
+  nombre: Cancha Principal (renovada)
+  precio_hora: 18.0
+  descripcion: Nueva iluminación LED
+  fotos[]: [nueva_foto.jpg]
+  ```
+  
+  Ejemplo JSON (sin fotos):
+  ```json
+  {
+    "id_cancha": 1,
+    "nombre": "Cancha Principal (renovada)",
+    "precio_hora": 18.0,
+    "descripcion": "Nueva iluminación LED"
+  }
+  ```
+  
+  ---
+  
+  ### Respuesta exitosa (200 OK)
+  
+  ```json
+  {
+    "message": "Cancha actualizada exitosamente",
+    "data": {
+      "id_cancha": 1,
+      "nombre": "Cancha Principal (renovada)",
+      "id_tipo_deporte": 2,
+      "tipo_deporte": "Fútbol",
+      "ubicacion": "Av. Central 123",
+      "precio": 18.0,
+      "descripcion": "Nueva iluminación LED",
+      "condiciones_uso": "No tacos metálicos",
+      "coordenadas": "13.7000,-89.2000",
+      "fotos": [
+        { "id_foto": 10, "id_cancha": 1, "url_foto": "/public/assets/img/canchas/1_1.jpg" },
+        { "id_foto": 11, "id_cancha": 1, "url_foto": "/public/assets/img/canchas/1_2.jpg" },
+        { "id_foto": 22, "id_cancha": 1, "url_foto": "/public/assets/img/canchas/1_1735230000_0.jpg" }
+      ]
+    }
+  }
+  ```
+  
+  ---
+  
+  ### Errores
+  
+  | Código | Descripción |
+  | --- | --- |
+  | `400` | `{ "message": "El parámetro id_cancha debe ser un entero válido" }` |
+  | `404` | `{ "message": "Cancha no encontrada" }` |
+  | `500` | `{ "message": "Ocurrió un error al actualizar la cancha", "error": "...", "line": 123 }` |
+}

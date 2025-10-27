@@ -4,7 +4,10 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
-require __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
+
+// Inicializar Eloquent ORM
+require_once __DIR__ . '/http/database/eloquent.php';
 
 /**
  * Carga una vista desde /view y devuelve 404 si no existe
@@ -32,7 +35,9 @@ function renderView(Response $response, string $view): Response
 $app = AppFactory::create();
 $app->addBodyParsingMiddleware();
 
-(require __DIR__ . '/http/controllers/login.php')($app);
+// Registrar rutas API y Web (estilo Laravel)
+(require __DIR__ . '/routes/api.php')($app);
+(require __DIR__ . '/routes/web.php')($app);
 
 $app->add(function (Request $request, RequestHandler $handler): Response {
     $uri = $request->getUri()->getPath();
@@ -54,18 +59,6 @@ $app->add(function (Request $request, RequestHandler $handler): Response {
     }
 
     return $handler->handle($request);
-});
-
-$app->get('/', function (Request $request, Response $response) {
-    return renderView($response, 'index.html');
-});
-
-$app->get('/login', function (Request $request, Response $response) {
-    return renderView($response, 'authentication/login.html');
-});
-
-$app->get('/registro', function (Request $request, Response $response) {
-    return renderView($response, 'authentication/registro.html');
 });
 
 $app->run();
