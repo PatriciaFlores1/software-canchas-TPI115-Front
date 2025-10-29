@@ -18,8 +18,8 @@ class HorarioDisponible extends Model
     ];
 
     protected $casts = [
-        'hora_inicio' => 'datetime:H:i:s',
-        'hora_fin' => 'datetime:H:i:s',
+        /*'hora_inicio' => 'datetime:H:i:s',
+        'hora_fin' => 'datetime:H:i:s',*/
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

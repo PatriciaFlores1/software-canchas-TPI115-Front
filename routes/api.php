@@ -4,6 +4,9 @@ use Slim\App;
 use Slim\Routing\RouteCollectorProxy as RouteCollectorProxy;
 use App\Controllers\CanchasController;
 use App\Controllers\CatalogosController;
+use App\Controllers\ReservasController;
+use App\Controllers\PropietariosController;
+use App\Controllers\UsuariosController;
 
 return function (App $app) {
     $app->group('/api/v1', function (RouteCollectorProxy $v1) {
@@ -21,12 +24,31 @@ return function (App $app) {
         });
 
         $v1->group('/reservas', function (RouteCollectorProxy $group) {
-            // endpoints de reservas por agregar
+            $group->get('', ReservasController::class . ':index');
+            $group->get('/detalle', ReservasController::class . ':show');
+            $group->post('', ReservasController::class . ':store');
+            $group->put('', ReservasController::class . ':update');
+            $group->patch('/estado', ReservasController::class . ':cambiarEstado');
+            $group->get('/disponibilidad', [ReservasController::class, 'disponibilidad']);
+
         });
 
         $v1->group('/usuarios', function (RouteCollectorProxy $group) {
-            // endpoints de usuarios por agregar
+            $group->get('', UsuariosController::class . ':index');
+            $group->get('/detalle', UsuariosController::class . ':show');
+            $group->post('', UsuariosController::class . ':store');
+            $group->put('', UsuariosController::class . ':update');
+            $group->patch('/estado', UsuariosController::class . ':cambiarEstado');
         });
+
+        $v1->group('/propietarios', function (RouteCollectorProxy $group) {
+            $group->get('', PropietariosController::class . ':index');
+            $group->get('/detalle', PropietariosController::class . ':show');
+            $group->post('', PropietariosController::class . ':store');
+            $group->put('', PropietariosController::class . ':update');
+        });
+
+
     });
 
     (require_once __DIR__ . '/../http/controllers/login.php')($app);
