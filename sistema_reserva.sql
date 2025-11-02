@@ -219,3 +219,11 @@ INSERT INTO `tipos_deporte` (`nombre`) VALUES
   ('Fútbol'),
   ('Básquetbol'),
   ('Voleibol');
+
+-- --------------------------------------------------------
+-- INSERTS: roles (3 registros)
+-- --------------------------------------------------------
+INSERT INTO `roles` (`nombre`) VALUES
+  ('admin'),
+  ('cliente'),
+  ('propietario');
