@@ -227,3 +227,9 @@ INSERT INTO `roles` (`nombre`) VALUES
   ('admin'),
   ('cliente'),
   ('propietario');
+
+-- --------------------------------------------------------
+-- INSERTS: usuarios (Solo admin)
+-- --------------------------------------------------------
+INSERT INTO `usuarios` (`nombre`, `apellido`, `email`, `password`, `telefono`, `id_rol`, `fecha_registro`, `id_estado`, `url_foto`) VALUES
+('Admin', 'canchas', 'admincanchas@gmail.com', '$2y$10$EjvrU/9loLcaEhZ3hlaAnO6SadB0MLvrFlvoiXPWsXDThXKqRbfo.', '75906148', 1, '2025-11-01 09:39:31', 1, NULL),
