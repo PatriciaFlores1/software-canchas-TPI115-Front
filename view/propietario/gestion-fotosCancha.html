@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subir Fotos - Cancha | Canchas SV</title>
+
+  <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/public/assets/css/style.css" />
+</head>
+<body>
+  <div id="sidebar-container"></div>
+  <main class="main-content">
+    <div class="container" style="max-width:900px; margin-top:24px;">
+      <h3>Subir fotos de la cancha</h3>
+      <p id="info-cancha" class="text-muted"></p>
+
+      <form id="form-fotos" enctype="multipart/form-data" novalidate>
+        <div class="mb-3">
+          <label class="form-label">Id Cancha</label>
+          <input id="id-cancha" type="text" class="form-control" readonly />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Seleccione imágenes</label>
+          <input id="fotos" type="file" accept="image/*" multiple class="form-control" />
+          <div id="preview" class="mt-2 d-flex gap-2 flex-wrap"></div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <button id="btn-cancelar" class="btn btn-outline" type="button">Cancelar</button>
+          <div class="ms-auto">
+            <button id="btn-subir" class="btn btn-primary" type="submit">Subir fotos</button>
+          </div>
+        </div>
+        <div id="fotos-feedback" class="mt-2 small text-muted"></div>
+      </form>
+    </div>
+  </main>
+
+  <script src="/public/libs/jquery/jquery.min.js"></script>
+  <script src="/public/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/assets/js/main.js"></script>
+  <script src="/public/assets/js/propietario/gestion-fotosCancha.js"></script>
+</body>
+</html>

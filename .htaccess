@@ -1,0 +1,18 @@
+# Redirect all requests to index.php (Slim routing)
+# Except existing files and directories
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Allow direct access to existing files (css, js, images, etc.)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Otherwise forward to index.php
+  RewriteRule ^ index.php [L,QSA]
+</IfModule>
+
+# If mod_rewrite isn't available, fallback to serve index.php
+<IfModule !mod_rewrite.c>
+  DirectoryIndex index.php
+</IfModule>

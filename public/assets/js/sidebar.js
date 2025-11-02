@@ -3,39 +3,37 @@
   const menuContainer = document.getElementById("sidebar-menu");
   if (!menuContainer) return;
 
-  // --- Rol actual (simulado) ---
-  const rolUsuario = "administrador";
-
   // --- Menús por rol ---
   const menus = {
     administrador: [
-      { icon: "bi-graph-up", label: "Estadísticas" },
-      { icon: "bi-gear", label: "Gestión de Canchas" },
-      { icon: "bi-people", label: "Gestión de Usuarios" },
-      { icon: "bi-calendar-check", label: "Gestión de Reservas" },
-      { icon: "bi-person", label: "Perfil" },
+      { icon: "bi-graph-up", label: "Estadísticas", view: "administrador/gestion-estadisticas.html" },
+      { icon: "bi-gear", label: "Gestión de Canchas", view: "administrador/gestion-canchas.html" },
+      { icon: "bi-people", label: "Gestión de Usuarios", view: "administrador/gestion-usuarios.html" },
+      { icon: "bi-calendar-check", label: "Gestión de Reservas", view: "administrador/gestion-reservas.html" },
+  { icon: "bi-person", label: "Perfil", view: "administrador/gestion-perfil.html" },
     ],
     propietario: [
-      { icon: "bi-graph-up", label: "Estadísticas" },
-      { icon: "bi-folder2-open", label: "Mis Canchas" },
-      { icon: "bi-cash-coin", label: "Ingresos" },
-      { icon: "bi-person", label: "Perfil" },
+      { icon: "bi-graph-up", label: "Estadísticas", view: "propietario/gestion-estadisticas.html" },
+      { icon: "bi-folder2-open", label: "Mis Canchas", view: "propietario/gestion-misCanchas.html" },
+      { icon: "bi-cash-coin", label: "Ingresos", view: "propietario/gestion-reservas.html" },
+      { icon: "bi-person", label: "Perfil", view: "propietario/gestion-perfil.html" },
     ],
     cliente: [
-      { icon: "bi-search", label: "Explorar" },
-      { icon: "bi-folder2-open", label: "Mis Canchas" },
-      { icon: "bi-person", label: "Perfil" },
+      { icon: "bi-search", label: "Explorar", view: "cliente/explorar.html" },
+      { icon: "bi-folder2-open", label: "Mis Canchas", view: "cliente/mis-canchas.html" },
+      { icon: "bi-person", label: "Perfil", view: "cliente/gestion-perfil.html" },
     ],
   };
 
   // --- Renderizar el menú según rol ---
   function updateMenu(rol) {
     menuContainer.innerHTML = "";
-    
+
     if (menus[rol]) {
       menus[rol].forEach((item) => {
         const link = document.createElement("a");
-        link.href = "#";
+        // Usar la ruta con ?v= para compatibilidad si no hay mod_rewrite
+        link.href = `/?v=${item.view}`;
         link.classList.add("sidebar-link");
         link.title = item.label; // tooltip útil cuando está colapsado
         link.setAttribute("data-bs-toggle", "tooltip");
@@ -50,8 +48,27 @@
     }
   }
 
-  // Renderizar menú según el rol actual
-  updateMenu(rolUsuario);
+  // Obtener rol actual desde el backend (/api/v1/me)
+  fetch('/api/v1/me')
+    .then((res) => {
+      if (!res.ok) throw res;
+      return res.json();
+    })
+    .then((data) => {
+      // Mapear id_rol a nombre de rol
+  const idRol = Number(data.id_rol || 0);
+  let rol = 'cliente';
+  // id_rol: 1=Admin, 2=Cliente, 3=Propietario
+  if (idRol === 1) rol = 'administrador';
+  else if (idRol === 2) rol = 'cliente';
+  else if (idRol === 3) rol = 'propietario';
+
+      updateMenu(rol);
+    })
+    .catch(() => {
+      // No autenticado: ocultar menú o dejar cliente por defecto
+      updateMenu('cliente');
+    });
 
   // --- Elementos principales ---
   const sidebar = document.querySelector(".sidebar");
@@ -87,6 +104,27 @@
   // Event listeners
   if (toggleBtn) toggleBtn.addEventListener("click", toggleSidebar);
   if (mobileMenuBtn) mobileMenuBtn.addEventListener("click", toggleSidebar);
+
+  // Logout handler (el elemento viene del sidebar.html cargado dinámicamente)
+  function attachLogout() {
+    const logoutBtn = document.getElementById('logout-btn');
+    if (!logoutBtn) return;
+
+    logoutBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        const res = await fetch('/api/v1/logout', { method: 'POST' });
+        // Al cerrar sesión, redirigimos al inicio público
+        window.location.href = '/';
+      } catch (err) {
+        console.error('Error en logout', err);
+        window.location.href = '/';
+      }
+    });
+  }
+
+  // Como sidebar.html se carga dinámicamente, esperar un tick para adjuntar logout
+  setTimeout(attachLogout, 300);
 
   // Cerrar al hacer clic fuera (modo móvil)
   overlay.addEventListener("click", () => {

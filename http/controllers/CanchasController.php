@@ -14,7 +14,8 @@ class CanchasController
     private const CONTENT_TYPE_JSON = 'application/json';
     private const MSG_NOT_FOUND = 'Cancha no encontrada';
     private const MSG_INVALID_ID = 'El parámetro id_cancha debe ser un entero válido';
-    private const UPLOAD_DIR = __DIR__ . '/../../public/assets/img/canchas/';
+    // Upload directory for cancha photos (changed to img-cancha as requested)
+    private const UPLOAD_DIR = __DIR__ . '/../../public/assets/img/img-cancha/';
 
     public function index(Request $request, Response $response): Response
     {
@@ -273,9 +274,57 @@ class CanchasController
                 
                 FotoCancha::create([
                     'id_cancha' => $idCancha,
-                    'url_foto' => '/public/assets/img/canchas/' . $nombreArchivo,
+                    'url_foto' => '/public/assets/img/img-cancha/' . $nombreArchivo,
                 ]);
             }
+        }
+    }
+
+    /**
+     * Endpoint helper: almacena fotos para una cancha existente (subida separada)
+     */
+    public function storeFotos(Request $request, Response $response): Response
+    {
+        try {
+            $body = (array) ($request->getParsedBody() ?? []);
+            $query = $request->getQueryParams();
+            $id = (int) ($body['id_cancha'] ?? $query['id_cancha'] ?? 0);
+
+            if ($id <= 0) {
+                $payload = json_encode(['message' => 'Falta el id_cancha o es inválido']);
+                $response->getBody()->write($payload);
+                return $response->withStatus(400)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+            }
+
+            $cancha = Cancha::find($id);
+            if (!$cancha) {
+                $payload = json_encode(['message' => 'Cancha no encontrada']);
+                $response->getBody()->write($payload);
+                return $response->withStatus(404)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+            }
+
+            $uploadedFiles = $request->getUploadedFiles();
+            if (empty($uploadedFiles['fotos'])) {
+                $payload = json_encode(['message' => 'No se enviaron archivos']);
+                $response->getBody()->write($payload);
+                return $response->withStatus(400)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+            }
+
+            $this->procesarFotos($cancha->id_cancha, $uploadedFiles['fotos']);
+
+            $cancha->load('fotos');
+
+            $payload = json_encode(['message' => 'Fotos subidas correctamente', 'data' => $cancha->fotos]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+        } catch (\Throwable $e) {
+            $payload = json_encode([
+                'message' => 'Ocurrió un error al subir las fotos',
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+            ]);
+            $response->getBody()->write($payload);
+            return $response->withStatus(500)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
         }
     }
     }

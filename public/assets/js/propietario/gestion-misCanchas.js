@@ -1,64 +1,140 @@
 // Mis canchas - Propietario
 
 (function () {
-  const canchas = [
-    { nombre: 'Cancha de Tenis Central', deporte: 'Tenis', direccion: 'Calle Principal 123, Ciudad', estado: 'Activa' },
-    { nombre: 'Cancha de Fútbol 5', deporte: 'Fútbol', direccion: 'Avenida del Deporte 456, Ciudad', estado: 'Activa' },
-    { nombre: 'Cancha de Baloncesto Cubierta', deporte: 'Baloncesto', direccion: 'Calle del Gimnasio 789, Ciudad', estado: 'Inactiva' },
-    { nombre: 'Fútbol Rápido "La Bombonera"', deporte: 'Tenis', direccion: 'Calle Principal 520, Ciudad', estado: 'Inactiva' },
-    { nombre: 'Pádel Center - Pista 2', deporte: 'Véisbol', direccion: 'Calle Principal 1252, Ciudad', estado: 'Activa' },
-  ];
-
-  const pageSize = 10;
-  let currentPage = 1;
+  // State
+  let canchas = [];
+  let pagination = { total: 0, per_page: 10, current_page: 1, last_page: 1, from: 0, to: 0 };
+  let loading = false;
 
   function badge(estado) {
-    if (estado === 'Activa') return '<span class="badge badge-success">Activa</span>';
-    if (estado === 'Mantenimiento') return '<span class="badge badge-warning">Mantenimiento</span>';
-    return '<span class="badge badge-danger">Inactiva</span>';
+    if (!estado) return '<span class="badge badge-secondary">Desconocido</span>';
+    if (estado.toLowerCase().indexOf('act') === 0) return '<span class="badge badge-success">' + estado + '</span>';
+    if (estado.toLowerCase().indexOf('man') === 0) return '<span class="badge badge-warning">' + estado + '</span>';
+    return '<span class="badge badge-danger">' + estado + '</span>';
   }
 
-  function render(page = 1) {
+  function render() {
     const tbody = document.getElementById('tabla-canchas');
     const info = document.getElementById('tabla-info');
-    const start = (page - 1) * pageSize;
-    const end = Math.min(start + pageSize, canchas.length);
-    const rows = canchas.slice(start, end).map((c) => `
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+
+    if (!tbody) return;
+
+    if (loading) {
+      tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">Cargando...</td></tr>';
+      if (info) info.textContent = '';
+      if (btnPrev) btnPrev.disabled = true;
+      if (btnNext) btnNext.disabled = true;
+      return;
+    }
+
+    if (!canchas.length) {
+      tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">Sin registros</td></tr>';
+      if (info) info.textContent = 'Mostrando 0 registros';
+      if (btnPrev) btnPrev.disabled = true;
+      if (btnNext) btnNext.disabled = true;
+      return;
+    }
+
+    const rows = canchas.map((c) => `
       <tr>
-        <td>${c.nombre}</td>
-        <td>${c.deporte}</td>
-        <td>${c.direccion}</td>
-        <td>${badge(c.estado)}</td>
+        <td>${escapeHtml(c.nombre || '')}</td>
+        <td>${escapeHtml(c.tipo_deporte || '')}</td>
+        <td>${escapeHtml(c.ubicacion || '')}</td>
+        <td>${badge(c.estado || '')}</td>
         <td class="text-end cell-actions">
-          <button class="btn btn-outline btn-sm me-1" title="Editar"><i class="bi bi-pencil-square"></i></button>
-          <button class="btn btn-outline btn-sm" title="Ver"><i class="bi bi-eye"></i></button>
+          <button class="btn btn-outline btn-sm me-1" title="Editar" data-id="${c.id_cancha}"><i class="bi bi-pencil-square"></i></button>
+          <button class="btn btn-outline btn-sm" title="Ver" data-id="${c.id_cancha}"><i class="bi bi-eye"></i></button>
         </td>
       </tr>
     `).join('');
-    if (tbody) tbody.innerHTML = rows || '<tr><td colspan="5" class="text-center py-4 text-muted">Sin registros</td></tr>';
-    if (info) info.textContent = canchas.length ? `Mostrando ${start + 1}-${end} de ${canchas.length} registros` : 'Mostrando 0 registros';
 
-    const btnPrev = document.getElementById('btn-prev');
-    const btnNext = document.getElementById('btn-next');
-    if (btnPrev) btnPrev.disabled = page <= 1;
-    if (btnNext) btnNext.disabled = end >= canchas.length;
+    tbody.innerHTML = rows;
+
+    if (info) info.textContent = `Mostrando ${pagination.from}-${pagination.to} de ${pagination.total} registros`;
+
+    if (btnPrev) btnPrev.disabled = pagination.current_page <= 1;
+    if (btnNext) btnNext.disabled = pagination.current_page >= pagination.last_page;
+  }
+
+  function escapeHtml(text) {
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  async function loadPage(page = 1) {
+    loading = true;
+    render();
+    try {
+      const per_page = pagination.per_page || 10;
+      const res = await fetch(`/api/v1/canchas?page=${page}&per_page=${per_page}`, { credentials: 'same-origin' });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.message || 'Error al obtener canchas');
+
+      canchas = json.data || [];
+      pagination = Object.assign(pagination, json.pagination || {});
+      // normalize pagination numbers
+      pagination.total = pagination.total || (canchas.length || 0);
+      pagination.per_page = pagination.per_page || per_page;
+      pagination.current_page = pagination.current_page || page;
+      pagination.last_page = pagination.last_page || 1;
+      pagination.from = pagination.from || (canchas.length ? 1 : 0);
+      pagination.to = pagination.to || canchas.length;
+
+    } catch (err) {
+      console.error('Error cargando canchas', err);
+      const tbody = document.getElementById('tabla-canchas');
+      if (tbody) tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-danger">Error al cargar registros</td></tr>';
+      const info = document.getElementById('tabla-info');
+      if (info) info.textContent = '';
+    } finally {
+      loading = false;
+      render();
+    }
   }
 
   function bind() {
     const btnAdd = document.getElementById('btn-add');
     const btnPrev = document.getElementById('btn-prev');
     const btnNext = document.getElementById('btn-next');
-    if (btnAdd) btnAdd.addEventListener('click', () => alert('Acción: Añadir Cancha'));
-    if (btnPrev) btnPrev.addEventListener('click', () => { if (currentPage > 1) { currentPage -= 1; render(currentPage); } });
-    if (btnNext) btnNext.addEventListener('click', () => {
-      const totalPages = Math.ceil(canchas.length / pageSize);
-      if (currentPage < totalPages) { currentPage += 1; render(currentPage); }
+    const tbody = document.getElementById('tabla-canchas');
+
+    if (btnAdd) btnAdd.addEventListener('click', () => {
+      window.location.href = '/?v=propietario/gestion-nuevaCancha.html';
     });
+
+    if (btnPrev) btnPrev.addEventListener('click', () => {
+      if (pagination.current_page > 1) loadPage(pagination.current_page - 1);
+    });
+
+    if (btnNext) btnNext.addEventListener('click', () => {
+      if (pagination.current_page < pagination.last_page) loadPage(pagination.current_page + 1);
+    });
+
+    // Actions: edit / view
+    if (tbody) {
+      tbody.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        const id = btn.getAttribute('data-id');
+        if (!id) return;
+        if (btn.title === 'Editar') {
+          window.location.href = '/?v=propietario/gestion-nuevaCancha.html&id_cancha=' + encodeURIComponent(id);
+        } else if (btn.title === 'Ver') {
+          window.location.href = '/?v=propietario/gestion-detalleCancha.html&id_cancha=' + encodeURIComponent(id);
+        }
+      });
+    }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
     bind();
-    render(currentPage);
+    loadPage(1);
   });
 })();
 

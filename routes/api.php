@@ -14,6 +14,8 @@ return function (App $app) {
             $group->get('', CanchasController::class . ':index');
             $group->get('/detalle', CanchasController::class . ':show');
             $group->post('', CanchasController::class . ':store');
+            // Subida de fotos en paso separado
+            $group->post('/fotos', CanchasController::class . ':storeFotos');
             $group->put('', CanchasController::class . ':update');
             $group->patch('/estado', CanchasController::class . ':cambiarEstado');
         });
