@@ -1,0 +1,3 @@
+# Mantener esta carpeta en el repositorio
+# Los archivos reales (fotos de canchas) se suben en tiempo de ejecución mediante POST /api/v1/canchas/fotos
+# No añadas archivos sensibles aquí. Esta entrada permite que Git incluya la carpeta vacía.

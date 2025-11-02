@@ -18,8 +18,6 @@ body:multipart-form {
   descripcion: Pasto sintético
   condiciones_uso: No tacos metálicos
   coordenada: 13.7000,-89.2000
-  fotos[]: @file(/path/to/foto1.jpg)
-  fotos[]: @file(/path/to/foto2.jpg)
 }
 
 docs {
@@ -30,7 +28,7 @@ docs {
   ### Descripción
   Crea una nueva cancha. Si no se envía `id_estado`, se asigna ACTIVO por defecto.
   
-  **IMPORTANTE:** Si envías fotos, el Content-Type debe ser `multipart/form-data`.
+  **IMPORTANTE:** Las fotos NO deben enviarse en este endpoint. Para subir fotos usa el endpoint separado `POST /api/v1/canchas/fotos` enviando `fotos[]` y `id_cancha`.
   
   ---
   
@@ -45,7 +43,7 @@ docs {
   - `condiciones_uso` (string)
   - `coordenada` (string)
   - `id_estado` (integer, opcional - default: ACTIVO)
-  - `fotos[]` (file[], opcional - múltiples archivos)
+  - Nota: Para subir fotos usa `POST /api/v1/canchas/fotos` con `fotos[]` y `id_cancha`.
   
   Ejemplo de request (form-data):
   ```
@@ -56,11 +54,9 @@ docs {
   descripcion: Pasto sintético
   condiciones_uso: No tacos metálicos
   coordenada: 13.7000,-89.2000
-  fotos[]: [archivo1.jpg]
-  fotos[]: [archivo2.jpg]
   ```
   
-  Las fotos se guardan en `/public/assets/img/canchas/` con nombre: `{id_cancha}_{timestamp}_{index}.{ext}`
+  Las fotos se guardan en `/public/assets/img/img-cancha/` con nombre: `{id_cancha}_{timestamp}_{index}.{ext}` cuando se suben mediante `POST /api/v1/canchas/fotos`.
   
   ---
   

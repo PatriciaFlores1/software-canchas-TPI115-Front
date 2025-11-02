@@ -119,12 +119,6 @@ class CanchasController
             $cancha = Cancha::findOrFail($id);
             $cancha->update($body);
 
-            // Procesar fotos si vienen en el request
-            $uploadedFiles = $request->getUploadedFiles();
-            if (!empty($uploadedFiles['fotos'])) {
-                $this->procesarFotos($cancha->id_cancha, $uploadedFiles['fotos']);
-            }
-
             $cancha->load(['tipoDeporte', 'fotos']);
 
             $data = [
@@ -170,12 +164,6 @@ class CanchasController
             }
 
             $cancha = Cancha::create($body);
-
-            // Procesar fotos si vienen en el request
-            $uploadedFiles = $request->getUploadedFiles();
-            if (!empty($uploadedFiles['fotos'])) {
-                $this->procesarFotos($cancha->id_cancha, $uploadedFiles['fotos']);
-            }
 
             $cancha->load(['tipoDeporte', 'fotos']);
 
