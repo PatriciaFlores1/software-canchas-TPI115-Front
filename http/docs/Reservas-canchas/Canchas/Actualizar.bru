@@ -15,7 +15,6 @@ body:multipart-form {
   nombre: Cancha Principal (renovada)
   precio_hora: 18.0
   descripcion: Nueva iluminación LED
-  fotos[]: @file(/path/to/nueva_foto.jpg)
 }
 
 docs {
@@ -26,7 +25,7 @@ docs {
   ### Descripción
   Actualiza los datos de una cancha. Devuelve el objeto actualizado en formato aplanado, incluyendo las fotos.
   
-  **IMPORTANTE:** Si envías fotos nuevas, el Content-Type debe ser `multipart/form-data`. Las fotos se AGREGAN a las existentes.
+  **IMPORTANTE:** Las fotos NO deben enviarse en este endpoint. Para añadir fotos use `POST /api/v1/canchas/fotos` con `id_cancha` y `fotos[]`.
   
   ---
   
@@ -42,7 +41,7 @@ docs {
   - `descripcion` (string)
   - `condiciones_uso` (string)
   - `coordenada` (string)
-  - `fotos[]` (file[], opcional - múltiples archivos para agregar)
+  - Nota: Para subir fotos usa `POST /api/v1/canchas/fotos` con `fotos[]` y `id_cancha`.
   
   Ejemplo form-data:
   ```
@@ -50,7 +49,6 @@ docs {
   nombre: Cancha Principal (renovada)
   precio_hora: 18.0
   descripcion: Nueva iluminación LED
-  fotos[]: [nueva_foto.jpg]
   ```
   
   Ejemplo JSON (sin fotos):
