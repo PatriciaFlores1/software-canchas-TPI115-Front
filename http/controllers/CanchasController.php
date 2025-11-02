@@ -20,7 +20,7 @@ class CanchasController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $canchas = Cancha::with(['tipoDeporte', 'estado'])
+            $canchas = Cancha::with(['tipoDeporte', 'estado', 'fotos'])
             ->orderBy('id_cancha', 'asc')
             ->paginate(10);
 
@@ -29,6 +29,10 @@ class CanchasController
                     'id_cancha' => $cancha->id_cancha,
                     'nombre' => $cancha->nombre,
                     'ubicacion' => $cancha->ubicacion,
+                    'precio' => $cancha->precio_hora,
+                    'descripcion' => $cancha->descripcion,
+                    // primer foto si existe
+                    'imagen' => $cancha->fotos && count($cancha->fotos) ? ($cancha->fotos[0]->url_foto ?? null) : null,
                     'id_tipo_deporte' => $cancha->id_tipo_deporte,
                     'tipo_deporte' => $cancha->tipoDeporte->nombre ?? null,
                     'id_estado' => $cancha->id_estado,

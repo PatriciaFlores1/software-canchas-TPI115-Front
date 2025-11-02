@@ -1,21 +1,23 @@
 // Información de Cancha - Cliente
 
 (function () {
-  // Datos demo de la cancha
-  const cancha = {
-    nombre: 'Cancha Central de Tenis',
-    deporte: 'Tenis',
-    direccion: '123 Calle Principal, Ciudad, Provincia',
-    precioHora: 25,
-    condiciones: 'Cancelaciones hasta 24 horas antes. No se permiten alimentos en la cancha.',
-    descripcion:
-      'Disfruta de nuestra cancha de tenis profesional, ideal para partidos individuales o dobles. Superficie de juego de alta calidad, iluminación nocturna y vestuarios disponibles.',
-    imagenes: [
-      '/public/assets/img/tenis.png',
-      '/public/assets/img/futbol.png',
-      '/public/assets/img/baloncesto.png',
-    ],
+  // Cancha cargada desde API
+  let cancha = {
+    nombre: '',
+    deporte: '',
+    direccion: '',
+    precioHora: 0,
+    condiciones: '',
+    descripcion: '',
+    imagenes: [],
   };
+
+  // Util: obtener query param
+  function getQueryParam(name) {
+    const qs = window.location.search.substring(1);
+    const params = new URLSearchParams(qs);
+    return params.get(name);
+  }
 
   // Horarios por fecha (ISO YYYY-MM-DD) con estado
   const horarios = {
@@ -47,10 +49,10 @@
     const indicators = $('galeria-indicadores');
     const inner = $('galeria-inner');
     if (!indicators || !inner) return;
-    indicators.innerHTML = cancha.imagenes
-      .map((_, idx) => `<button type="button" data-bs-target="#galeria" data-bs-slide-to="${idx}" ${idx === 0 ? 'class="active" aria-current="true"' : ''} aria-label="Slide ${idx + 1}"></button>`) 
-      .join('');
-    inner.innerHTML = cancha.imagenes
+    const imgs = (cancha.imagenes && cancha.imagenes.length) ? cancha.imagenes : ['/public/assets/img/tenis.png'];
+    indicators.innerHTML = imgs
+      .map((_, idx) => `<button type="button" data-bs-target="#galeria" data-bs-slide-to="${idx}" ${idx === 0 ? 'class="active" aria-current="true"' : ''} aria-label="Slide ${idx + 1}"></button>`) .join('');
+    inner.innerHTML = imgs
       .map((src, idx) => `
         <div class="carousel-item ${idx === 0 ? 'active' : ''}">
           <img src="${src}" class="d-block w-100" alt="Imagen ${idx + 1}" style="border-radius: var(--border-radius); object-fit: cover; max-height: 420px;"/>
@@ -65,10 +67,11 @@
     const condiciones = $('cancha-condiciones');
     const descripcion = $('cancha-descripcion');
     if (nombre) nombre.textContent = cancha.nombre;
-    if (meta) meta.textContent = `${cancha.deporte} · ${cancha.direccion}`;
-    if (precio) precio.textContent = `$${Number(cancha.precioHora).toFixed(2)}`;
-    if (condiciones) condiciones.textContent = cancha.condiciones;
-    if (descripcion) descripcion.textContent = cancha.descripcion;
+    if (meta) meta.textContent = `${cancha.deporte || cancha.tipo_deporte} · ${cancha.direccion || cancha.ubicacion}`;
+    if (precio) priceVal = cancha.precioHora || cancha.precio || cancha.precio_hora || 0;
+    if (precio) precio.textContent = `$${Number(priceVal).toFixed(2)}`;
+    if (condiciones) condiciones.textContent = cancha.condiciones || cancha.condiciones_uso || '';
+    if (descripcion) descripcion.textContent = cancha.descripcion || cancha.condiciones_uso || '';
   }
 
   // Calendario
@@ -162,12 +165,73 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    renderGaleria();
-    renderInfo();
-    renderCalendar();
-    bindCalendarNav();
-    const initialISO = toISO(today.getFullYear(), today.getMonth() + 1, today.getDate());
-    selectDate(initialISO);
+    const idCancha = getQueryParam('id_cancha');
+    if (!idCancha) {
+      // no id, volver al listado
+      window.location.href = '/?v=cliente/gestion-homeCanchas.html';
+      return;
+    }
+
+    // Load cancha detalle
+    fetch('/api/v1/canchas/detalle?id_cancha=' + encodeURIComponent(idCancha), { credentials: 'same-origin' })
+      .then((r) => r.json())
+      .then((j) => {
+        const d = j.data || j;
+        cancha.nombre = d.nombre || '';
+        cancha.deporte = d.tipo_deporte || d.deporte || '';
+        cancha.direccion = d.ubicacion || '';
+        cancha.precioHora = d.precio || d.precio_hora || 0;
+        cancha.condiciones = d.condiciones_uso || '';
+        cancha.descripcion = d.descripcion || d.condiciones_uso || '';
+        cancha.imagenes = (d.fotos && Array.isArray(d.fotos) && d.fotos.length) ? d.fotos.map(f => f.url_foto) : [];
+        renderGaleria();
+        renderInfo();
+
+        // Now fetch horarios de la cancha and build date-based slots for next 30 days
+        return fetch('/api/v1/horarios?id_cancha=' + encodeURIComponent(idCancha), { credentials: 'same-origin' });
+      })
+      .then((r) => r && r.json())
+      .then((j) => {
+        const items = (j && j.data) || [];
+        // Map horarios by day name (e.g., 'Lunes')
+        const byDay = {};
+        items.forEach(h => {
+          const day = (h.dia_semana || h.dia || '').toString();
+          if (!day) return;
+          byDay[day] = byDay[day] || [];
+          byDay[day].push({ inicio: h.hora_inicio || h.inicio, fin: h.hora_fin || h.fin, id_horario: h.id_horario || h.id });
+        });
+
+        // build horarios for next 30 days
+        const daysAhead = 30;
+        const map = {};
+        const spanishDays = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+        for (let i = 0; i < daysAhead; i++) {
+          const dt = new Date();
+          dt.setDate(dt.getDate() + i);
+          const iso = toISO(dt.getFullYear(), dt.getMonth()+1, dt.getDate());
+          const dow = spanishDays[dt.getDay()];
+          const slots = (byDay[dow] || []).map(s => ({ inicio: s.inicio, fin: s.fin, estado: 'Disponible' }));
+          if (slots.length) map[iso] = slots;
+        }
+        // replace horarios used by the calendar
+        for (const k in horarios) delete horarios[k];
+        Object.assign(horarios, map);
+
+        renderCalendar();
+        bindCalendarNav();
+        const initialISO = toISO(today.getFullYear(), today.getMonth() + 1, today.getDate());
+        selectDate(initialISO);
+      }).catch((err) => {
+        console.error('Error loading cancha or horarios', err);
+        // still render minimal UI
+        renderGaleria();
+        renderInfo();
+        renderCalendar();
+        bindCalendarNav();
+        const initialISO = toISO(today.getFullYear(), today.getMonth() + 1, today.getDate());
+        selectDate(initialISO);
+      });
   });
 })();
 
