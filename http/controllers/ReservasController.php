@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\Reserva;
 use App\Models\Estado;
 use App\Models\HorarioDisponible;
+use App\Models\Cancha;
+use App\Models\Usuario;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;

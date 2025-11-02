@@ -10,6 +10,11 @@ use App\Controllers\UsuariosController;
 
 return function (App $app) {
     $app->group('/api/v1', function (RouteCollectorProxy $v1) {
+        $v1->group('/estadisticas', function (RouteCollectorProxy $group) {
+            $group->get('/generales', \App\Controllers\EstadisticasController::class . ':estadisticasGenerales');
+            $group->get('/ingresos-mensuales', \App\Controllers\EstadisticasController::class . ':ingresosMensuales');
+            $group->get('/reservas-mensuales', \App\Controllers\EstadisticasController::class . ':reservasMensuales');
+        });
         $v1->group('/canchas', function (RouteCollectorProxy $group) {
             $group->get('', CanchasController::class . ':index');
             $group->get('/detalle', CanchasController::class . ':show');
