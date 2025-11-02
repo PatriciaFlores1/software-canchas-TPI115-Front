@@ -1,0 +1,27 @@
+meta {
+  name: Verify OTP
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/v1/auth/verify-otp
+  body: json
+  auth: none
+}
+
+docs {
+  # ✅ Verificar OTP
+
+  ## POST /api/v1/auth/verify-otp
+
+  ### Body
+  ```json
+  { "email": "usuario@ejemplo.com", "otp": "123456" }
+  ```
+
+  ### Respuesta
+  ```json
+  { "message": "OTP verificado" }
+  ```
+}

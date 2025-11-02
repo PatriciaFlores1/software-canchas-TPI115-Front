@@ -27,6 +27,12 @@ return function (App $app) {
             $group->get('/estados', CatalogosController::class . ':estados');
         });
 
+        $v1->group('/auth', function (RouteCollectorProxy $group) {
+            $group->post('/forgot', \App\Controllers\AuthController::class . ':forgot');
+            $group->post('/verify-otp', \App\Controllers\AuthController::class . ':verifyOtp');
+            $group->post('/reset', \App\Controllers\AuthController::class . ':reset');
+        });
+
         $v1->group('/reservas', function (RouteCollectorProxy $group) {
             $group->get('', ReservasController::class . ':index');
             $group->get('/detalle', ReservasController::class . ':show');
