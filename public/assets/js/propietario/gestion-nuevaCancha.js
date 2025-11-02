@@ -25,6 +25,8 @@
   let createdId = null;
   // When editing, the deporte select is filled asynchronously. Store a pending value to apply after options load.
   let pendingTipoDeporte = null;
+  // Track whether the form was opened for editing an existing cancha
+  let isEditing = false;
 
   // Acciones de formulario
   function bindForm() {
@@ -33,24 +35,34 @@
   const fb = $('form-feedback');
   const btnContinuar = $('btn-continuar');
 
-    if (btnContinuar) btnContinuar.disabled = true;
+    if (btnContinuar) {
+      btnContinuar.disabled = true;
+      btnContinuar.textContent = 'Continuar';
+    }
     if (cancel) cancel.addEventListener('click', () => { window.location.href = '/?v=propietario/gestion-misCanchas.html'; });
     if (!form) return;
 
     if (btnContinuar) {
       btnContinuar.addEventListener('click', () => {
         if (!createdId) return;
-        window.location.href = '/?v=propietario/gestion-fotosCancha.html?id_cancha=' + encodeURIComponent(createdId);
+        // Use & to append additional query params (v is the first param)
+        window.location.href = '/?v=propietario/gestion-fotosCancha.html&id_cancha=' + encodeURIComponent(createdId);
       });
     }
 
-      // If URL contains id_cancha, load the cancha data for editing
-      const urlParams = new URLSearchParams(window.location.search);
-      const idFromUrl = urlParams.get('id_cancha') || urlParams.get('id');
-      if (idFromUrl) {
-        // try loading the cancha details
-        loadCancha(idFromUrl);
+    // If URL contains id_cancha, load the cancha data for editing
+    const urlParams = new URLSearchParams(window.location.search);
+    const idFromUrl = urlParams.get('id_cancha') || urlParams.get('id');
+    if (idFromUrl) {
+      // Edit mode: mark editing, enable button and change text
+      isEditing = true;
+      if (btnContinuar) {
+        btnContinuar.disabled = false;
+        btnContinuar.textContent = 'Editar foto';
       }
+      // try loading the cancha details
+      loadCancha(idFromUrl);
+    }
 
     // Cargar tipos de deporte en el select
     fetch('/api/v1/catalogos/tipos-deporte')
@@ -123,10 +135,14 @@
         if (res.ok) {
           // obtener id desde response (data.id_cancha o id_cancha)
           const id = json.data && json.data.id_cancha ? json.data.id_cancha : (json.id_cancha || null);
-          if (id) {
-            createdId = id;
-            if (btnContinuar) btnContinuar.disabled = false;
-          }
+            if (id) {
+              const wasCreating = !createdId && !isEditing;
+              createdId = id;
+              if (btnContinuar) {
+                btnContinuar.disabled = false;
+                btnContinuar.textContent = isEditing ? 'Editar foto' : 'Continuar';
+              }
+            }
           if (fb) fb.textContent = json.message || 'Cancha guardada correctamente';
         } else {
           if (fb) fb.textContent = json.message || json.error || 'Error al guardar la cancha';
@@ -176,7 +192,10 @@
 
       createdId = d.id_cancha || id;
       const btnContinuar = $('btn-continuar');
-      if (btnContinuar) btnContinuar.disabled = false;
+      if (btnContinuar) {
+        btnContinuar.disabled = false;
+        btnContinuar.textContent = isEditing ? 'Editar foto' : 'Continuar';
+      }
       if (fb) fb.textContent = '';
 
       // If map already initialized, re-run initMap to position marker from coords

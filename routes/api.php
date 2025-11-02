@@ -16,6 +16,8 @@ return function (App $app) {
             $group->post('', CanchasController::class . ':store');
             // Subida de fotos en paso separado
             $group->post('/fotos', CanchasController::class . ':storeFotos');
+            // Eliminar una foto existente (id_foto en query)
+            $group->delete('/fotos', CanchasController::class . ':deleteFoto');
             $group->put('', CanchasController::class . ':update');
             $group->patch('/estado', CanchasController::class . ':cambiarEstado');
         });
@@ -33,6 +35,14 @@ return function (App $app) {
             $group->patch('/estado', ReservasController::class . ':cambiarEstado');
             $group->get('/disponibilidad', [ReservasController::class, 'disponibilidad']);
 
+        });
+
+        $v1->group('/horarios', function (RouteCollectorProxy $group) {
+            // Guardar horarios disponibles para una cancha
+            $group->get('', \App\Controllers\HorariosController::class . ':index');
+            $group->post('', \App\Controllers\HorariosController::class . ':store');
+            // Eliminar un horario por id_horario
+            $group->delete('', \App\Controllers\HorariosController::class . ':delete');
         });
 
         $v1->group('/usuarios', function (RouteCollectorProxy $group) {

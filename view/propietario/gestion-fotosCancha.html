@@ -5,11 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Subir Fotos - Cancha | Canchas SV</title>
 
+  <!-- Tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap -->
   <link rel="stylesheet" href="/public/libs/bootstrap/css/bootstrap.min.css" />
+  <!-- Iconos locales -->
+  <link rel="stylesheet" href="/public/assets/icons/bootstrap-icons.css" />
+  <!-- Estilos del proyecto -->
   <link rel="stylesheet" href="/public/assets/css/style.css" />
+  <!-- Ocultar navbar en esta vista (sidebar debe seguir visible) -->
+  <style>
+    /* escondemos el contenedor del navbar para esta página */
+    #navbar-container { display: none !important; }
+  </style>
 </head>
 <body>
+  <div id="navbar-container"></div>
+  <!-- Sidebar dinámico -->
   <div id="sidebar-container"></div>
+
+  <!-- Botón móvil para abrir menú -->
+  <button id="mobile-menu-btn" class="mobile-menu-btn">
+    <i class="bi bi-list"></i>
+  </button>
   <main class="main-content">
     <div class="container" style="max-width:900px; margin-top:24px;">
       <h3>Subir fotos de la cancha</h3>
@@ -17,8 +36,10 @@
 
       <form id="form-fotos" enctype="multipart/form-data" novalidate>
         <div class="mb-3">
-          <label class="form-label">Id Cancha</label>
-          <input id="id-cancha" type="text" class="form-control" readonly />
+          <label class="form-label">Cancha</label>
+          <!-- Hidden id is submitted to the server; show a readable cancha name to the user -->
+          <input id="id-cancha" type="hidden" />
+          <input id="nombre-cancha" type="text" class="form-control" readonly placeholder="Cargando..." />
         </div>
         <div class="mb-3">
           <label class="form-label">Seleccione imágenes</label>

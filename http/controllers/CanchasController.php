@@ -327,4 +327,51 @@ class CanchasController
             return $response->withStatus(500)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
         }
     }
+    
+    /**
+     * Eliminar una foto de cancha por id_foto
+     * Método: DELETE /api/v1/canchas/fotos?id_foto=123
+     */
+    public function deleteFoto(Request $request, Response $response): Response
+    {
+        try {
+            $query = $request->getQueryParams();
+            $id = (int) ($query['id_foto'] ?? 0);
+
+            if ($id <= 0) {
+                $payload = json_encode(['message' => 'Falta el id_foto o es inválido']);
+                $response->getBody()->write($payload);
+                return $response->withStatus(400)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+            }
+
+            $foto = FotoCancha::find($id);
+            if (!$foto) {
+                $payload = json_encode(['message' => 'Foto no encontrada']);
+                $response->getBody()->write($payload);
+                return $response->withStatus(404)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+            }
+
+            // Eliminar archivo físico si existe
+            $url = $foto->url_foto; // ejemplo: /public/assets/img/img-cancha/filename.jpg
+            $relative = ltrim($url, '/');
+            $filePath = __DIR__ . '/../../' . $relative;
+            if (is_file($filePath)) {
+                @unlink($filePath);
+            }
+
+            $foto->delete();
+
+            $payload = json_encode(['message' => 'Foto eliminada correctamente', 'data' => ['id_foto' => $id]]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+        } catch (\Throwable $e) {
+            $payload = json_encode([
+                'message' => 'Ocurrió un error al eliminar la foto',
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+            ]);
+            $response->getBody()->write($payload);
+            return $response->withStatus(500)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+        }
     }
+}

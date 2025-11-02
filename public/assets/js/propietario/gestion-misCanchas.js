@@ -45,7 +45,7 @@
         <td>${badge(c.estado || '')}</td>
         <td class="text-end cell-actions">
           <button class="btn btn-outline btn-sm me-1" title="Editar" data-id="${c.id_cancha}"><i class="bi bi-pencil-square"></i></button>
-          <button class="btn btn-outline btn-sm" title="Ver" data-id="${c.id_cancha}"><i class="bi bi-eye"></i></button>
+          <button class="btn btn-outline btn-sm" title="Horarios" data-id="${c.id_cancha}"><i class="bi bi-calendar3"></i></button>
         </td>
       </tr>
     `).join('');
@@ -125,8 +125,32 @@
         if (!id) return;
         if (btn.title === 'Editar') {
           window.location.href = '/?v=propietario/gestion-nuevaCancha.html&id_cancha=' + encodeURIComponent(id);
-        } else if (btn.title === 'Ver') {
-          window.location.href = '/?v=propietario/gestion-detalleCancha.html&id_cancha=' + encodeURIComponent(id);
+        } else if (btn.title === 'Horarios') {
+          // Abrir la vista para gestionar horarios disponibles de la cancha seleccionada
+          // Intentamos primero la ruta correcta; si devuelve 404 probamos la variante antigua
+          (async function navigateToHorario(canchaId) {
+            const target = '/?v=propietario/gestion-nuevaHorario.html&id_cancha=' + encodeURIComponent(canchaId);
+            const alt = '/?v=propietario/gestion-nuevohorario.html&id_cancha=' + encodeURIComponent(canchaId);
+            try {
+              const r = await fetch(target, { method: 'GET', credentials: 'same-origin' });
+              if (r.ok) {
+                window.location.href = target;
+                return;
+              }
+              // si no OK y es 404, probamos la alternativa
+              if (r.status === 404) {
+                const r2 = await fetch(alt, { method: 'GET', credentials: 'same-origin' });
+                if (r2.ok) {
+                  window.location.href = alt;
+                  return;
+                }
+              }
+            } catch (e) {
+              // fallthrough: si ocurre un error de red simplemente navegamos a la target
+            }
+            // última opción: ir a la target aunque pueda 404 (fallback)
+            window.location.href = target;
+          })(id);
         }
       });
     }
