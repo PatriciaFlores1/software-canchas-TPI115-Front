@@ -1,46 +1,18 @@
 // Home de Canchas - Cliente
 
 (function () {
-  const data = [
-    {
-      id: 1,
-      nombre: 'Campo de fútbol en el centro de la ciudad',
-      deporte: 'Fútbol',
-      ubicacion: 'Centro, Ciudad',
-      precioHora: 50,
-      descripcion: 'Un campo de primera calidad en el corazón de la ciudad, perfecto para partidos competitivos.',
-      imagen: '/public/assets/img/futbol.png',
-    },
-    {
-      id: 2,
-      nombre: 'Cancha de baloncesto en el centro',
-      deporte: 'Baloncesto',
-      ubicacion: 'Parque Central',
-      precioHora: 40,
-      descripcion: 'Disfruta de un partido con vistas a la ciudad en esta cancha al aire libre bien mantenida.',
-      imagen: '/public/assets/img/baloncesto.png',
-    },
-    {
-      id: 3,
-      nombre: 'Cancha de voleibol de playa',
-      deporte: 'Voleibol',
-      ubicacion: 'Costa Norte',
-      precioHora: 35,
-      descripcion: 'Juega con la arena entre los dedos en esta impresionante cancha junto a la playa.',
-      imagen: '/public/assets/img/voleibol.png',
-    },
-    {
-      id: 4,
-      nombre: 'Tenis Club - Court A',
-      deporte: 'Tenis',
-      ubicacion: 'Zona Norte',
-      precioHora: 45,
-      descripcion: 'Pista rápida, iluminación nocturna y vestuarios.',
-      imagen: '/public/assets/img/tenis.png',
-    },
-  ];
+  let data = [];
 
   const $ = (id) => document.getElementById(id);
+
+  function escapeHtml(text) {
+    return String(text || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
 
   function currency(n) {
     return `$${Number(n || 0).toFixed(2)}`;
@@ -54,7 +26,7 @@
 
   function renderOptions() {
     const select = $('f-deporte');
-    const deportes = Array.from(new Set(data.map((c) => c.deporte)));
+    const deportes = Array.from(new Set(data.map((c) => c.deporte || c.tipo_deporte)));
     deportes.forEach((d) => {
       const opt = document.createElement('option');
       opt.value = d;
@@ -64,15 +36,22 @@
   }
 
   function card(cancha) {
+    const imagen = cancha.imagen || cancha.url_foto || '/public/assets/img/tenis.png';
+    const nombre = cancha.nombre || cancha.nombre_cancha || '';
+    const deporte = cancha.deporte || cancha.tipo_deporte || '';
+    const precio = cancha.precio || cancha.precioHora || 0;
+    const descripcion = cancha.descripcion || '';
+    const id = cancha.id_cancha || cancha.id || cancha.id_cancha;
+
     return `
       <div class="col-12 col-md-6 col-xl-4">
         <div class="card h-100">
-          <img src="${cancha.imagen}" class="card-img-top" alt="${cancha.deporte}" />
+          <img src="${imagen}" class="card-img-top" alt="${deporte}" />
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title">${cancha.nombre}</h5>
-            <div class="text-muted mb-2">${cancha.deporte} · ${currency(cancha.precioHora)}/hora</div>
-            <p class="card-text flex-grow-1">${cancha.descripcion}</p>
-            <button class="btn btn-primary mt-2" data-id="${cancha.id}">Más Información</button>
+            <h5 class="card-title">${escapeHtml(nombre)}</h5>
+            <div class="text-muted mb-2">${escapeHtml(deporte)} · ${currency(precio)}/hora</div>
+            <p class="card-text flex-grow-1">${escapeHtml(descripcion)}</p>
+            <button class="btn btn-primary mt-2" data-id="${id}">Más Información</button>
           </div>
         </div>
       </div>`;
@@ -84,9 +63,10 @@
     const precioMax = parseCurrency($('f-precio').value);
 
     return data.filter((c) => {
-      const byDep = deporte ? c.deporte === deporte : true;
-      const byUbi = ubicacion ? (c.ubicacion + ' ' + c.nombre).toLowerCase().includes(ubicacion) : true;
-      const byPrice = precioMax != null ? c.precioHora <= precioMax : true;
+      const byDep = deporte ? (c.deporte === deporte || c.tipo_deporte === deporte) : true;
+      const byUbi = ubicacion ? ((c.ubicacion || '') + ' ' + (c.nombre || '')).toLowerCase().includes(ubicacion) : true;
+      const precioActual = c.precio || c.precioHora || 0;
+      const byPrice = precioMax != null ? precioActual <= precioMax : true;
       return byDep && byUbi && byPrice;
     });
   }
@@ -97,7 +77,8 @@
     grid.querySelectorAll('button[data-id]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
-        alert('Más información de la cancha #' + id);
+        // Navigate to cancha info view
+        window.location.href = '/?v=cliente/gestion-infoCancha.html&id_cancha=' + encodeURIComponent(id);
       });
     });
   }
@@ -113,9 +94,31 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    renderOptions();
-    bindFilters();
-    renderGrid(data);
+    // Load canchas from API and render
+    fetch('/api/v1/canchas?page=1&per_page=100', { credentials: 'same-origin' })
+      .then((r) => r.json())
+      .then((j) => {
+        const items = j.data || [];
+        data = items.map((c) => ({
+          id_cancha: c.id_cancha,
+          nombre: c.nombre,
+          tipo_deporte: c.tipo_deporte,
+          deporte: c.tipo_deporte,
+          ubicacion: c.ubicacion,
+          precio: c.precio || c.precio_hora || 0,
+          descripcion: c.descripcion || c.condiciones_uso || '',
+          imagen: c.imagen || (c.fotos && c.fotos[0] && c.fotos[0].url_foto) || c.imagen,
+        }));
+        renderOptions();
+        bindFilters();
+        renderGrid(data);
+      }).catch((err) => {
+        console.error('No se pudieron cargar las canchas', err);
+        // Fallback: render empty
+        renderOptions();
+        bindFilters();
+        renderGrid([]);
+      });
   });
 })();
 

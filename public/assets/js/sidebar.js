@@ -19,8 +19,8 @@
       { icon: "bi-person", label: "Perfil", view: "propietario/gestion-perfil.html" },
     ],
     cliente: [
-      { icon: "bi-search", label: "Explorar", view: "cliente/explorar.html" },
-      { icon: "bi-folder2-open", label: "Mis Canchas", view: "cliente/mis-canchas.html" },
+      { icon: "bi-search", label: "Explorar", view: "cliente/gestion-homeCanchas.html" },
+      { icon: "bi-folder2-open", label: "Mis Reservas", view: "cliente/gestion-misReservas.html" },
       { icon: "bi-person", label: "Perfil", view: "cliente/gestion-perfil.html" },
     ],
   };
