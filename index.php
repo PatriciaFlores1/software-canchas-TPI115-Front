@@ -21,7 +21,38 @@ function renderView(Response $response, string $view): Response
     $filePath = __DIR__ . '/view/' . $view;
     $realPath = realpath($filePath);
 
+    // Seguridad: verificar autorización por rol para carpetas privadas
+    // iniciar sesión si es necesario
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
+
+    // Función simple para comprobar acceso según prefijo de ruta
+    $checkAccess = function (string $viewPath) {
+        // Normalizar
+        $p = ltrim($viewPath, '/');
+        // Carpetas protegidas: administrador, cliente, propietario
+        if (strpos($p, 'administrador/') === 0) {
+            return isset($_SESSION['id_rol']) && (int)$_SESSION['id_rol'] === 1;
+        }
+        if (strpos($p, 'cliente/') === 0) {
+            return isset($_SESSION['id_rol']) && (int)$_SESSION['id_rol'] === 2;
+        }
+        if (strpos($p, 'propietario/') === 0) {
+            return isset($_SESSION['id_rol']) && (int)$_SESSION['id_rol'] === 3;
+        }
+        // Para otras vistas, permitir acceso público
+        return true;
+    };
+
     if ($realPath && is_file($realPath)) {
+        if (!$checkAccess($view)) {
+            // No autenticado o sin permiso: redirigir a login
+            $response = new \Slim\Psr7\Response();
+            $response = $response->withHeader('Location', '/login')->withStatus(302);
+            return $response;
+        }
+
         $mime = mime_content_type($realPath) ?: 'text/html';
         $response->getBody()->write(file_get_contents($realPath));
         return $response->withHeader('Content-Type', $mime);
@@ -29,6 +60,46 @@ function renderView(Response $response, string $view): Response
 
     $response->getBody()->write('404 Not Found');
     return $response->withStatus(404);
+}
+
+// Fallback to serve a view directly via query param ?v=path/to/view.html
+// This helps when mod_rewrite/.htaccess isn't available on the server.
+if (isset($_GET['v'])) {
+    $v = $_GET['v'];
+    $filePath = __DIR__ . '/view/' . ltrim($v, '/');
+    $realPath = realpath($filePath);
+
+    if ($realPath && is_file($realPath)) {
+        // Iniciar sesión para comprobar permisos
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
+        // Comprobar acceso según carpeta
+        $p = ltrim($v, '/');
+        $allowed = true;
+        if (strpos($p, 'administrador/') === 0) {
+            $allowed = isset($_SESSION['id_rol']) && (int)$_SESSION['id_rol'] === 1;
+        } elseif (strpos($p, 'cliente/') === 0) {
+            $allowed = isset($_SESSION['id_rol']) && (int)$_SESSION['id_rol'] === 2;
+        } elseif (strpos($p, 'propietario/') === 0) {
+            $allowed = isset($_SESSION['id_rol']) && (int)$_SESSION['id_rol'] === 3;
+        }
+
+        if (!$allowed) {
+            header('Location: /login');
+            exit;
+        }
+
+        $mime = mime_content_type($realPath) ?: 'text/html';
+        header('Content-Type: ' . $mime);
+        readfile($realPath);
+        exit;
+    } else {
+        header('HTTP/1.1 404 Not Found');
+        echo '404 Not Found';
+        exit;
+    }
 }
 
 

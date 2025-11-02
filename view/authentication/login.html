@@ -30,7 +30,7 @@
           <div class="card login-card p-4 shadow-sm border-0">
             <h3 class="text-center fw-bold mb-4">Iniciar Sesión</h3>
 
-            <form method="post">
+            <form id="loginForm" method="post">
               <div class="mb-3">
                 <label for="correo" class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
                 <div class="input-group">
@@ -75,5 +75,40 @@
   <script src="/public/libs/jquery/jquery.min.js"></script>
   <script src="/public/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/public/assets/js/main.js"></script>
+  <script>
+    (function(){
+      const form = document.getElementById('loginForm');
+      form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        const email = document.getElementById('correo').value.trim();
+        const password = document.getElementById('password').value;
+
+        if (!email || !password) {
+          alert('Por favor completa email y contraseña');
+          return;
+        }
+
+        try {
+          const res = await fetch('/api/v1/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+
+          const data = await res.json();
+          if (res.ok && data.status === 'ok') {
+            // Redirigir a la ruta indicada por el backend
+            window.location.href = data.redirect || '/administrador/gestion-canchas.html';
+          } else {
+            const msg = data.message || 'Error en autenticación';
+            alert(msg);
+          }
+        } catch (err) {
+          console.error('Error al enviar login', err);
+          alert('Error al comunicarse con el servidor');
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
