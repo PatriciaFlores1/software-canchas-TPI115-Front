@@ -40,6 +40,10 @@ return function (App $app) {
         }
 
         $viewPath = $path === '' ? 'index.html' : $path;
+        if (substr($viewPath, -5) !== '.html') {
+            $viewPath .= '.html';
+        }
+
         return renderView($response, $viewPath);
     });
 };
