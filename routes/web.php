@@ -18,6 +18,18 @@ return function (App $app) {
         return renderView($response, 'authentication/registro.html');
     });
 
+    $app->get('/recuperar-cuenta', function (Request $request, Response $response) {
+        return renderView($response, 'authentication/recuperar-cuenta.html');
+    });
+
+    $app->get('/verificar', function (Request $request, Response $response) {
+        return renderView($response, 'authentication/verificar.html');
+    });
+
+    $app->get('/cambiar-credenciales', function (Request $request, Response $response) {
+        return renderView($response, 'authentication/cambiar-credenciales.html');
+    });
+
     // Catch-all para vistas en /view (no intercepta /api/...)
     $app->get('/{path:.*}', function (Request $request, Response $response, array $args) {
         $path = $args['path'] ?? '';

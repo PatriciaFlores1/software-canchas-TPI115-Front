@@ -64,5 +64,52 @@
   <script src="/public/libs/jquery/jquery.min.js"></script>
   <script src="/public/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/public/assets/js/main.js"></script>
+  <script>
+    (function(){
+      const form = document.querySelector('.recuperar-card form') || document.querySelector('form');
+      if (!form) return;
+      const correoInput = form.querySelector('#correo');
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const resendLink = document.querySelector('p.text-center a.text-decoration-none.text-primary');
+
+      async function sendForgot(email){
+        if (!email) { alert('Por favor ingresa tu correo electrónico'); return; }
+        submitBtn.disabled = true;
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = 'Enviando...';
+        try {
+          const res = await fetch('/api/v1/auth/forgot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+          const data = await res.json().catch(()=>({}));
+          if (res.ok) {
+            alert(data.message || 'Si existe una cuenta, recibirás instrucciones por correo.');
+            // redirigir al paso de verificación
+            window.location.href = '/verificar?email=' + encodeURIComponent(email);
+          } else {
+            alert(data.message || 'Ocurrió un error al enviar el código');
+          }
+        } catch (err) {
+          console.error('Error forgot:', err);
+          alert('Error al comunicarse con el servidor');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerText = originalText;
+        }
+      }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const email = correoInput ? correoInput.value.trim() : '';
+        sendForgot(email);
+      });
+
+      if (resendLink) {
+        resendLink.addEventListener('click', function(e){ e.preventDefault(); const email = correoInput ? correoInput.value.trim() : ''; sendForgot(email); });
+      }
+    })();
+  </script>
 </body>
 </html>
