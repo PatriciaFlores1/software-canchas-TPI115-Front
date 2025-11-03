@@ -30,6 +30,19 @@
     el.style.color = isOk ? 'var(--color-vermillion)' : 'var(--color-vermillion)';
   }
 
+  function getRoleId(roleName) {
+    switch (roleName) {
+      case 'Administrador':
+        return 1;
+      case 'Propietario':
+        return 2;
+      case 'Cliente':
+        return 3;
+      default:
+        return 3; // Default to Cliente
+    }
+  }
+
   function bind() {
     const form = $('form-nuevo-usuario');
     const cancel = $('btn-cancelar');
@@ -43,7 +56,42 @@
         showFeedback(errs[0], false);
         return;
       }
-      showFeedback('Usuario guardado (demo). Integre aquí su API.', true);
+
+      const nombreCompleto = $('nombre').value.trim();
+      const nombreParts = nombreCompleto.split(' ');
+      const nombre = nombreParts.shift();
+      const apellido = nombreParts.join(' ');
+
+      const data = {
+        nombre: nombre,
+        apellido: apellido,
+        email: $('correo').value.trim(),
+        password: $('password').value,
+        id_rol: getRoleId($('rol').value),
+      };
+
+      fetch('/api/v1/usuarios', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.error) {
+          showFeedback(result.error, false);
+        } else {
+          showFeedback('Usuario guardado correctamente.', true);
+          setTimeout(() => {
+            window.location.href = '/administrador/gestion-usuarios.html';
+          }, 1500);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showFeedback('Ocurrió un error al guardar el usuario.', false);
+      });
     });
   }
 

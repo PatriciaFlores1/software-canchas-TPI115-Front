@@ -15,6 +15,8 @@ return function (App $app) {
             $group->get('/generales', \App\Controllers\EstadisticasController::class . ':estadisticasGenerales');
             $group->get('/ingresos-mensuales', \App\Controllers\EstadisticasController::class . ':ingresosMensuales');
             $group->get('/reservas-mensuales', \App\Controllers\EstadisticasController::class . ':reservasMensuales');
+            $group->get('/propietario/generales', \App\Controllers\EstadisticasController::class . ':estadisticasGeneralesPropietario');
+            $group->get('/propietario/reservas-mensuales', \App\Controllers\EstadisticasController::class . ':reservasMensualesPropietario');
         });
         $v1->group('/canchas', function (RouteCollectorProxy $group) {
             $group->get('', CanchasController::class . ':index');

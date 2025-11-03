@@ -1,38 +1,11 @@
 // Gestión de Reservas - Admin
 
 (function () {
-  const reservas = [
-    { cancha: 'Cancha Rápida 1', cliente: 'Juan Pérez', fecha: '2025-05-10', hora: '18:00', deporte: 'Fútbol', precio: 25.0, estado: 'Confirmada' },
-    { cancha: 'Tenis Central', cliente: 'Ana Gómez', fecha: '2025-05-11', hora: '10:00', deporte: 'Tenis', precio: 30.0, estado: 'Pendiente' },
-    { cancha: 'Pádel Pro', cliente: 'Carlos Ruiz', fecha: '2025-05-12', hora: '20:00', deporte: 'Pádel', precio: 20.0, estado: 'Cancelada' },
-    { cancha: 'Basket Arena', cliente: 'Paty Flores', fecha: '2025-05-13', hora: '16:00', deporte: 'Baloncesto', precio: 35.0, estado: 'Cancelada' },
-    { cancha: 'Cancha Dos', cliente: 'Carlos Enri', fecha: '2025-06-13', hora: '17:00', deporte: 'Fútbol', precio: 25.0, estado: 'Confirmada' },
-    { cancha: 'Fútbol Norte', cliente: 'Rosa Vela', fecha: '2025-06-14', hora: '09:00', deporte: 'Fútbol', precio: 22.0, estado: 'Confirmada' },
-    { cancha: 'Pádel Club 3', cliente: 'Cecilia M.', fecha: '2025-06-15', hora: '12:00', deporte: 'Pádel', precio: 21.5, estado: 'Pendiente' },
-  ];
-
-  const pageSize = 5;
+  let reservas = [];
+  let pagination = {};
   let currentPage = 1;
   let q = '';
   let qDate = '';
-
-  function pad(n) { return n.toString().padStart(2, '0'); }
-
-  // Acepta "MM/DD/YYYY" o "YYYY-MM-DD" y devuelve "YYYY-MM-DD" o ""
-  function toISODate(str) {
-    if (!str) return '';
-    const s = str.trim();
-    if (!s) return '';
-    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
-    const m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-    if (m) {
-      const mm = pad(Number(m[1]));
-      const dd = pad(Number(m[2]));
-      const yyyy = m[3];
-      return `${yyyy}-${mm}-${dd}`;
-    }
-    return '';
-  }
 
   function badge(estado) {
     if (estado === 'Confirmada') return '<span class="badge badge-success">Confirmada</span>';
@@ -40,33 +13,28 @@
     return '<span class="badge badge-danger">Cancelada</span>';
   }
 
-  function filtra() {
-    const iso = toISODate(qDate);
-    const term = q.toLowerCase();
-    return reservas.filter((r) => {
-      const matchText = term
-        ? r.cancha.toLowerCase().includes(term) || r.cliente.toLowerCase().includes(term)
-        : true;
-      const matchDate = iso ? r.fecha === iso : true;
-      return matchText && matchDate;
-    });
+  function formatFecha(fecha) {
+    const date = new Date(fecha);
+    return date.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });
   }
 
-  function render(page = 1) {
-    const data = filtra();
+  function formatHora(fecha) {
+    const date = new Date(fecha);
+    return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function render() {
     const tbody = document.getElementById('tabla-reservas');
     const info = document.getElementById('tabla-info');
-    const start = (page - 1) * pageSize;
-    const end = Math.min(start + pageSize, data.length);
 
-    const rows = data.slice(start, end).map((r) => `
+    const rows = reservas.map((r) => `
       <tr>
         <td>${r.cancha}</td>
-        <td>${r.cliente}</td>
-        <td>${r.fecha}</td>
-        <td>${r.hora}</td>
+        <td>${r.nombre_cliente || r.usuario}</td>
+        <td>${formatFecha(r.fecha_inicio)}</td>
+        <td>${formatHora(r.fecha_inicio)}</td>
         <td>${r.deporte}</td>
-        <td>$${r.precio.toFixed(2)}</td>
+        <td>$${parseFloat(r.precio).toFixed(2)}</td>
         <td>${badge(r.estado)}</td>
         <td class="text-end cell-actions">
           <button class="btn btn-outline btn-sm" title="Ver"><i class="bi bi-eye"></i></button>
@@ -75,12 +43,35 @@
     `).join('');
 
     if (tbody) tbody.innerHTML = rows || '<tr><td colspan="8" class="text-center py-4 text-muted">Sin resultados</td></tr>';
-    if (info) info.textContent = data.length ? `Mostrando ${Math.min(start + 1, data.length)}-${end} de ${data.length} resultados` : 'Mostrando 0 resultados';
+    if (info) info.textContent = pagination.total ? `Mostrando ${pagination.from}-${pagination.to} de ${pagination.total} resultados` : 'Mostrando 0 resultados';
 
     const btnPrev = document.getElementById('btn-prev');
     const btnNext = document.getElementById('btn-next');
-    if (btnPrev) btnPrev.disabled = page <= 1;
-    if (btnNext) btnNext.disabled = end >= data.length;
+    if (btnPrev) btnPrev.disabled = pagination.current_page <= 1;
+    if (btnNext) btnNext.disabled = pagination.current_page >= pagination.last_page;
+  }
+
+  function fetchReservas(page = 1) {
+    const params = new URLSearchParams();
+    params.append('page', page);
+    if (q) {
+      params.append('q', q);
+    }
+    if (qDate) {
+      params.append('date', qDate);
+    }
+
+    fetch(`/api/v1/reservas?${params.toString()}`)
+      .then(response => response.json())
+      .then(data => {
+        reservas = data.data;
+        pagination = data.pagination;
+        currentPage = data.pagination.current_page;
+        render();
+      })
+      .catch(error => {
+        console.error('Error fetching reservas:', error);
+      });
   }
 
   function bind() {
@@ -88,37 +79,25 @@
     const search = $('search');
     const fecha = $('fecha');
     const filtrar = $('btn-filtrar');
-    const iconCalendar = document.getElementById('icon-calendar');
     const btnPrev = $('btn-prev');
     const btnNext = $('btn-next');
 
     const doFilter = () => {
       q = search ? search.value : '';
       qDate = fecha ? fecha.value : '';
-      currentPage = 1;
-      render(currentPage);
+      fetchReservas(1);
     };
 
     if (filtrar) filtrar.addEventListener('click', doFilter);
     if (search) search.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); doFilter(); } });
     if (fecha) fecha.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); doFilter(); } });
-    if (iconCalendar && fecha) iconCalendar.addEventListener('click', () => {
-      if (typeof fecha.showPicker === 'function') {
-        try { fecha.showPicker(); } catch { fecha.focus(); }
-      } else {
-        fecha.focus();
-      }
-    });
 
-    if (btnPrev) btnPrev.addEventListener('click', () => { if (currentPage > 1) { currentPage -= 1; render(currentPage); } });
-    if (btnNext) btnNext.addEventListener('click', () => {
-      const totalPages = Math.ceil(filtra().length / pageSize);
-      if (currentPage < totalPages) { currentPage += 1; render(currentPage); }
-    });
+    if (btnPrev) btnPrev.addEventListener('click', () => { if (currentPage > 1) { fetchReservas(currentPage - 1); } });
+    if (btnNext) btnNext.addEventListener('click', () => { if (currentPage < pagination.last_page) { fetchReservas(currentPage + 1); } });
   }
 
   document.addEventListener('DOMContentLoaded', () => {
     bind();
-    render(currentPage);
+    fetchReservas(currentPage);
   });
 })();

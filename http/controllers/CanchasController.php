@@ -74,9 +74,6 @@ class CanchasController
                 return $response->withStatus(400)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
             }
 
-            $cancha = Cancha::with(['tipoDeporte', 'fotos'])
-                ->findOrFail($id);
-            
             $data = [
                 'id_cancha' => $cancha->id_cancha,
                 'nombre' => $cancha->nombre,
@@ -88,6 +85,8 @@ class CanchasController
                 'condiciones_uso' => $cancha->condiciones_uso,
                 'coordenadas' => $cancha->coordenada,
                 'fotos' => $cancha->fotos,
+                'id_estado' => $cancha->id_estado,
+                'estado' => $cancha->estado->nombre ?? null,
             ];
             
             $payload = json_encode(['data' => $data]);

@@ -1,40 +1,8 @@
 // Gestión de Canchas - Admin
 
 (function () {
-  const canchas = [
-    {
-      nombre: 'Cancha de Tenis Central',
-      deporte: 'Tenis',
-      direccion: 'Calle Principal 123, Ciudad',
-      estado: 'Activa',
-    },
-    {
-      nombre: 'Cancha de Fútbol 5',
-      deporte: 'Fútbol',
-      direccion: 'Avenida del Deporte 456, Ciudad',
-      estado: 'Activa',
-    },
-    {
-      nombre: 'Cancha de Baloncesto Cubierta',
-      deporte: 'Baloncesto',
-      direccion: 'Calle del Gimnasio 789, Ciudad',
-      estado: 'Inactiva',
-    },
-    {
-      nombre: 'Fútbol Rápido "La Bombonera"',
-      deporte: 'Tenis',
-      direccion: 'Calle Principal 520, Ciudad',
-      estado: 'Inactiva',
-    },
-    {
-      nombre: 'Pádel Center - Pista 2',
-      deporte: 'Véisbol',
-      direccion: 'Calle Principal 1252, Ciudad',
-      estado: 'Activa',
-    },
-  ];
-
-  const pageSize = 10;
+  let canchas = [];
+  let pagination = {};
   let currentPage = 1;
 
   function badge(estado) {
@@ -43,31 +11,43 @@
     return '<span class="badge badge-danger">Inactiva</span>';
   }
 
-  function render(page = 1) {
+  function render() {
     const tbody = document.getElementById('tabla-canchas');
     const info = document.getElementById('tabla-info');
-    const start = (page - 1) * pageSize;
-    const end = Math.min(start + pageSize, canchas.length);
-
-    const rows = canchas.slice(start, end).map((c) => `
+    
+    const rows = canchas.map((c) => `
       <tr>
         <td>${c.nombre}</td>
-        <td>${c.deporte}</td>
-        <td>${c.direccion}</td>
+        <td>${c.tipo_deporte}</td>
+        <td>${c.ubicacion}</td>
         <td>${badge(c.estado)}</td>
         <td class="text-end cell-actions">
-          <button class="btn btn-outline btn-sm" title="Ver"><i class="bi bi-eye"></i></button>
+          <a href="/administrador/gestion-detalles.html?id_cancha=${c.id_cancha}" class="btn btn-outline btn-sm" title="Ver"><i class="bi bi-eye"></i></a>
         </td>
       </tr>
     `).join('');
 
     if (tbody) tbody.innerHTML = rows || '<tr><td colspan="5" class="text-center py-4 text-muted">Sin registros</td></tr>';
-    if (info) info.textContent = canchas.length ? `Mostrando ${start + 1}-${end} de ${canchas.length} registros` : 'Mostrando 0 registros';
+    if (info) info.textContent = pagination.total ? `Mostrando ${pagination.from}-${pagination.to} de ${pagination.total} registros` : 'Mostrando 0 registros';
 
     const btnPrev = document.getElementById('btn-prev');
     const btnNext = document.getElementById('btn-next');
-    if (btnPrev) btnPrev.disabled = page <= 1;
-    if (btnNext) btnNext.disabled = end >= canchas.length;
+    if (btnPrev) btnPrev.disabled = pagination.current_page <= 1;
+    if (btnNext) btnNext.disabled = pagination.current_page >= pagination.last_page;
+  }
+
+  function fetchCanchas(page = 1) {
+    fetch(`/api/v1/canchas?page=${page}`)
+      .then(response => response.json())
+      .then(data => {
+        canchas = data.data;
+        pagination = data.pagination;
+        currentPage = data.pagination.current_page;
+        render();
+      })
+      .catch(error => {
+        console.error('Error fetching canchas:', error);
+      });
   }
 
   function bind() {
@@ -75,22 +55,19 @@
     const btnNext = document.getElementById('btn-next');
     if (btnPrev) btnPrev.addEventListener('click', () => {
       if (currentPage > 1) {
-        currentPage -= 1;
-        render(currentPage);
+        fetchCanchas(currentPage - 1);
       }
     });
     if (btnNext) btnNext.addEventListener('click', () => {
-      const totalPages = Math.ceil(canchas.length / pageSize);
-      if (currentPage < totalPages) {
-        currentPage += 1;
-        render(currentPage);
+      if (currentPage < pagination.last_page) {
+        fetchCanchas(currentPage + 1);
       }
     });
   }
 
   document.addEventListener('DOMContentLoaded', () => {
     bind();
-    render(currentPage);
+    fetchCanchas(currentPage);
   });
 })();
 

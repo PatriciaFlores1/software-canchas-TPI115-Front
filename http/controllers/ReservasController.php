@@ -21,9 +21,38 @@ class ReservasController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $reservas = Reserva::with(['usuario', 'cancha', 'estado', 'pago'])
-                ->orderBy('id_reserva', 'desc')
-                ->paginate(10);
+            $params = $request->getQueryParams();
+            $q = $params['q'] ?? null;
+            $date = $params['date'] ?? null;
+            $id_propietario = $params['id_propietario'] ?? null;
+
+            $query = Reserva::with(['usuario', 'cancha.tipoDeporte', 'estado', 'pago']);
+
+            if ($q) {
+                $query->where(function ($query) use ($q) {
+                    $query->whereHas('cancha', function ($query) use ($q) {
+                        $query->where('nombre', 'like', "%{$q}%");
+                    })
+                    ->orWhereHas('usuario', function ($query) use ($q) {
+                        $query->where('nombre', 'like', "%{$q}%");
+                    })
+                    ->orWhere('nombre_cliente', 'like', "%{$q}%");
+                });
+            }
+
+            if ($date) {
+                $query->whereDate('fecha_inicio', $date);
+            }
+
+            if ($id_propietario) {
+                $query->whereHas('cancha', function ($query) use ($id_propietario) {
+                    $query->whereHas('propietarios', function ($query) use ($id_propietario) {
+                        $query->where('usuarios.id_usuario', $id_propietario);
+                    });
+                });
+            }
+
+            $reservas = $query->orderBy('id_reserva', 'desc')->paginate(10);
 
             $data = collect($reservas->items())->map(function ($reserva) {
                 return [
@@ -37,6 +66,8 @@ class ReservasController
                     'fecha_inicio' => $reserva->fecha_inicio,
                     'fecha_fin' => $reserva->fecha_fin,
                     'nombre_cliente' => $reserva->nombre_cliente,
+                    'deporte' => $reserva->cancha->tipoDeporte->nombre ?? null,
+                    'precio' => $reserva->cancha->precio_hora ?? null,
                 ];
             });
 

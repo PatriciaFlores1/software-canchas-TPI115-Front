@@ -149,5 +149,102 @@ class EstadisticasController
             return $response->withStatus(500)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
         }
     }
+
+    public function estadisticasGeneralesPropietario(Request $request, Response $response): Response
+    {
+        try {
+            $params = $request->getQueryParams();
+            $id_propietario = $params['id_propietario'] ?? null;
+
+            if (!$id_propietario) {
+                $response->getBody()->write(json_encode(['message' => 'El parámetro id_propietario es requerido']));
+                return $response->withStatus(400)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+            }
+
+            $canchas = Cancha::whereHas('propietarios', function ($query) use ($id_propietario) {
+                $query->where('usuarios.id_usuario', $id_propietario);
+            });
+
+            $numeroCanchas = (int) $canchas->count();
+            $usuariosRegistrados = (int) Usuario::count();
+            $reservasTotales = (int) Reserva::whereIn('id_cancha', $canchas->pluck('id_cancha'))->count();
+
+            $payload = [
+                'numero_canchas' => $numeroCanchas,
+                'usuarios_registrados' => $usuariosRegistrados,
+                'reservas_totales' => $reservasTotales,
+            ];
+
+            $response->getBody()->write(json_encode($payload));
+            return $response->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+
+        } catch (\Throwable $e) {
+            $payload = json_encode([
+                'message' => 'Ocurrió un error al obtener las estadísticas generales del propietario',
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+            ]);
+            $response->getBody()->write($payload);
+            return $response->withStatus(500)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+        }
+    }
+
+    public function reservasMensualesPropietario(Request $request, Response $response): Response
+    {
+        try {
+            $params = $request->getQueryParams();
+            $id_propietario = $params['id_propietario'] ?? null;
+            $year = (int) date('Y');
+
+            if (!$id_propietario) {
+                $response->getBody()->write(json_encode(['message' => 'El parámetro id_propietario es requerido']));
+                return $response->withStatus(400)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+            }
+
+            $canchas = Cancha::whereHas('propietarios', function ($query) use ($id_propietario) {
+                $query->where('usuarios.id_usuario', $id_propietario);
+            })->pluck('id_cancha');
+
+            $rows = Reserva::selectRaw('MONTH(fecha_inicio) as month, COUNT(*) as total')
+                ->whereIn('id_cancha', $canchas)
+                ->whereYear('fecha_inicio', $year)
+                ->groupByRaw('MONTH(fecha_inicio)')
+                ->orderByRaw('MONTH(fecha_inicio)')
+                ->get();
+
+            $months = [];
+            for ($m = 1; $m <= 12; $m++) {
+                $months[$m] = 0;
+            }
+
+            foreach ($rows as $r) {
+                $months[(int)$r->month] = (int)$r->total;
+            }
+
+            $data = [];
+            foreach ($months as $m => $count) {
+                $data[] = [
+                    'month' => $m,
+                    'total' => $count,
+                ];
+            }
+
+            $response->getBody()->write(json_encode([
+                'year' => $year,
+                'data' => $data,
+            ]));
+
+            return $response->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+
+        } catch (\Throwable $e) {
+            $payload = json_encode([
+                'message' => 'Ocurrió un error al obtener las estadísticas del propietario',
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+            ]);
+            $response->getBody()->write($payload);
+            return $response->withStatus(500)->withHeader('Content-Type', self::CONTENT_TYPE_JSON);
+        }
+    }
 }
 
