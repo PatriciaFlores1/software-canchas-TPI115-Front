@@ -44,7 +44,7 @@
                 </div>
               </div>
 
-              <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+              <button type="submit" class="btn btn-primary w-100">Verificar código</button>
             </form>
           </div>
         </div>
@@ -59,5 +59,31 @@
   <script src="/public/libs/jquery/jquery.min.js"></script>
   <script src="/public/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/public/assets/js/main.js"></script>
+  <script>
+    (function(){
+      // Pre-fill email from query string if provided
+      function qs(name){
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name) || '';
+      }
+
+      const email = qs('email');
+      // If needed, you could show the email on the page. For now keep flow hidden.
+
+      const form = document.querySelector('form');
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const otp = document.getElementById('codigo').value.trim();
+        if (!otp) { alert('Ingresa el código que recibiste por correo'); return; }
+        if (!email) {
+          alert('No se encontró el email. Vuelve a solicitar el código desde la pantalla de recuperación.');
+          return;
+        }
+        // No llamar a verify-otp aquí (marcaría el OTP como usado). Simplemente redirigimos al formulario de cambio
+        const url = '/cambiar-credenciales?email=' + encodeURIComponent(email) + '&otp=' + encodeURIComponent(otp);
+        window.location.href = url;
+      });
+    })();
+  </script>
 </body>
 </html>
