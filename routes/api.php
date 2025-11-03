@@ -7,6 +7,7 @@ use App\Controllers\CatalogosController;
 use App\Controllers\ReservasController;
 use App\Controllers\PropietariosController;
 use App\Controllers\UsuariosController;
+use App\Controllers\PagosController;
 
 return function (App $app) {
     $app->group('/api/v1', function (RouteCollectorProxy $v1) {
@@ -71,7 +72,11 @@ return function (App $app) {
             $group->put('', PropietariosController::class . ':update');
         });
 
-
+        $v1->group('/pagos', function (RouteCollectorProxy $group) {
+            $group->post('/create-order', PagosController::class . ':createOrder');
+            $group->post('/capture-order', PagosController::class . ':captureOrder');
+            $group->get('/detalle', PagosController::class . ':show');
+        }); 
     });
 
     (require_once __DIR__ . '/../http/controllers/login.php')($app);

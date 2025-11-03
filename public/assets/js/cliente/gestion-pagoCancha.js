@@ -2,6 +2,7 @@
 
 (function () {
   const reserva = {
+    id_reserva: 1,
     cancha: 'Cancha Central de Tenis',
     fechaISO: '2025-08-05',
     duracion: '1 hora',
@@ -80,23 +81,80 @@
     if (window.paypal && typeof window.paypal.Buttons === 'function') {
       window.paypal.Buttons({
         style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'paypal' },
-        createOrder: function (data, actions) {
-          return actions.order.create({
-            purchase_units: [{ amount: { value: total.toFixed(2) } }],
-          });
+        createOrder: async function (data, actions) {
+          try {
+            const response = await fetch('/api/v1/pagos/create-order', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                id_reserva: reserva.id_reserva,
+                monto: total
+              })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+              console.error('Error creating order:', result);
+              alert('Error al crear la orden de pago: ' + (result.error || 'Error desconocido'));
+              throw new Error(result.error || 'Error creating order');
+            }
+
+            return result.order_id;
+          } catch (error) {
+            console.error('Error creating order:', error);
+            alert('Error de conexión al crear la orden de pago');
+            throw error;
+          }
         },
-        onApprove: function (data, actions) {
-          return actions.order.capture().then(function () {
-            alert('Pago completado. ¡Gracias por tu reserva!');
-          });
+
+        onApprove: async function (data, actions) {
+          try {
+            const response = await fetch('/api/v1/pagos/capture-order', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                order_id: data.orderID,
+                id_reserva: reserva.id_reserva
+              })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+              console.error('Error capturing payment:', result);
+              alert('Error al procesar el pago: ' + (result.error || 'Error desconocido'));
+              return;
+            }
+
+            alert('¡Pago completado exitosamente! Transacción: ' + result.pago.transaccion);
+            
+            console.log('Payment captured successfully:', result);
+          } catch (error) {
+            console.error('Error capturing payment:', error);
+            alert('Error de conexión al procesar el pago');
+          }
         },
-        onError: function () {
+        
+        onError: function (err) {
+          console.error('PayPal error:', err);
+          alert('Error con PayPal. Por favor, intenta nuevamente.');
           if (fallback) fallback.style.display = 'block';
         },
+        
+        onCancel: function (data) {
+          console.log('Payment cancelled:', data);
+          alert('Pago cancelado. Puedes intentar nuevamente cuando estés listo.');
+        }
       }).render('#paypal-button-container');
       paypalRendered = true;
       container.style.display = 'block';
     } else {
+      console.error('PayPal SDK not loaded');
       if (fallback) fallback.style.display = 'block';
     }
   }
