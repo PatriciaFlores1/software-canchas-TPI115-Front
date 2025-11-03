@@ -142,7 +142,7 @@
             <div class="fw-semibold">${h.inicio} - ${h.fin}</div>
             ${reservado
               ? '<button class="btn btn-outline btn-sm" disabled>Ocupado</button>'
-              : `<button class="btn btn-primary btn-sm" data-slot="${idx}">Reservar</button>`}
+              : `<a href="http://localhost:8080/view/cliente/gestion-pagoCancha.html" class="btn btn-primary btn-sm" >Reservar</a>`}
           </div>`;
       })
       .join('') || '<div class="text-muted">No hay horarios configurados para esta fecha.</div>';

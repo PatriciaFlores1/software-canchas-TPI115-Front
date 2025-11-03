@@ -4,14 +4,43 @@
   const $ = (id) => document.getElementById(id);
 
   function initData() {
-    const nombre = $('inp-nombre');
-    const apellido = $('inp-apellido');
-    const correo = $('inp-correo');
-    const tel = $('inp-telefono');
-    if (nombre) nombre.value = 'Juan';
-    if (apellido) apellido.value = 'Pérez';
-    if (correo) correo.value = 'juan.perez@example.com';
-    if (tel) tel.value = '0000-0000';
+    fetch('/api/v1/me')
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          console.error('Error fetching user data:', data.error);
+          return;
+        }
+
+        const idUsuario = data.id_usuario;
+        if (!idUsuario) return;
+
+        fetch(`/api/v1/usuarios/detalle?id_usuario=${idUsuario}`)
+          .then(res => res.json())
+          .then(details => {
+            if (details.error) return;
+
+            const nombre = $('inp-nombre');
+            const apellido = $('inp-apellido');
+            const correo = $('inp-correo');
+            const tel = $('inp-telefono');
+            const perfilNombre = $('perfil-nombre');
+
+            if (nombre) nombre.value = details.nombre;
+            if (apellido) apellido.value = details.apellido;
+            if (correo) correo.value = details.email;
+            if (tel) tel.value = details.telefono || '';
+            if (perfilNombre) perfilNombre.textContent = `${details.nombre} ${details.apellido}`;
+
+            if (details.url_foto) {
+              const img = $('avatar-preview');
+              const icon = $('avatar-icon');
+              img.src = details.url_foto;
+              img.style.display = 'block';
+              if (icon) icon.style.display = 'none';
+            }
+          });
+      });
   }
 
   function bindAvatar() {

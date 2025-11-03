@@ -4,10 +4,39 @@
   function $(id) { return document.getElementById(id); }
 
   function initData() {
-    $('inp-nombre').value = 'Juan';
-    $('inp-apellido').value = 'Pérez';
-    $('inp-correo').value = 'juan.perez@example.com';
-    $('inp-telefono').value = '0000-0000';
+    fetch('/api/v1/me')
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          console.error('Error fetching user data:', data.error);
+          return;
+        }
+
+        // Fallback para datos de sesión básicos
+        const idUsuario = data.id_usuario;
+        if (!idUsuario) return;
+
+        // Solicitar detalles completos del usuario
+        fetch(`/api/v1/usuarios/detalle?id_usuario=${idUsuario}`)
+          .then(res => res.json())
+          .then(details => {
+            if (details.error) return;
+
+            $('inp-nombre').value = details.nombre;
+            $('inp-apellido').value = details.apellido;
+            $('inp-correo').value = details.email;
+            $('inp-telefono').value = details.telefono || '';
+            $('perfil-nombre').textContent = `${details.nombre} ${details.apellido}`;
+
+            if (details.url_foto) {
+              const img = $('avatar-preview');
+              const icon = $('avatar-icon');
+              img.src = details.url_foto;
+              img.style.display = 'block';
+              if (icon) icon.style.display = 'none';
+            }
+          });
+      });
   }
 
   function bindAvatar() {
